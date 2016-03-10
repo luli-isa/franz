@@ -1,0 +1,521 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CFFE76151C917FFC00217F3C /* Franz.h in Headers */ = {isa = PBXBuildFile; fileRef = CFFE76141C917FFC00217F3C /* Franz.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFFE761C1C917FFC00217F3C /* Franz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFFE76111C917FFC00217F3C /* Franz.framework */; };
+		CFFE76211C917FFC00217F3C /* FranzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76201C917FFC00217F3C /* FranzTests.swift */; };
+		CFFE76491C91813200217F3C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = CFFE762C1C91813200217F3C /* .gitkeep */; };
+		CFFE764B1C91813200217F3C /* AdminAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE762F1C91813200217F3C /* AdminAPI.swift */; };
+		CFFE764C1C91813200217F3C /* Broker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76301C91813200217F3C /* Broker.swift */; };
+		CFFE764D1C91813200217F3C /* Cluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76311C91813200217F3C /* Cluster.swift */; };
+		CFFE764E1C91813200217F3C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76321C91813200217F3C /* Connection.swift */; };
+		CFFE764F1C91813200217F3C /* Consumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76331C91813200217F3C /* Consumer.swift */; };
+		CFFE76501C91813200217F3C /* CRC32.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76351C91813200217F3C /* CRC32.swift */; };
+		CFFE76511C91813200217F3C /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76361C91813200217F3C /* Enumerations.swift */; };
+		CFFE76521C91813200217F3C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76371C91813200217F3C /* Extensions.swift */; };
+		CFFE76531C91813200217F3C /* FetchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76381C91813200217F3C /* FetchAPI.swift */; };
+		CFFE76541C91813200217F3C /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76391C91813200217F3C /* Group.swift */; };
+		CFFE76551C91813200217F3C /* GroupCoordinatorAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763A1C91813200217F3C /* GroupCoordinatorAPI.swift */; };
+		CFFE76561C91813200217F3C /* GroupMembershipAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763B1C91813200217F3C /* GroupMembershipAPI.swift */; };
+		CFFE76571C91813200217F3C /* KafkaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763C1C91813200217F3C /* KafkaProtocol.swift */; };
+		CFFE76581C91813200217F3C /* KafkaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763D1C91813200217F3C /* KafkaRequest.swift */; };
+		CFFE76591C91813200217F3C /* KafkaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763E1C91813200217F3C /* KafkaResponse.swift */; };
+		CFFE765A1C91813200217F3C /* MessageSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE763F1C91813200217F3C /* MessageSet.swift */; };
+		CFFE765B1C91813200217F3C /* MetadataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76401C91813200217F3C /* MetadataAPI.swift */; };
+		CFFE765C1C91813200217F3C /* OffsetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76411C91813200217F3C /* OffsetAPI.swift */; };
+		CFFE765D1C91813200217F3C /* OffsetCommitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76421C91813200217F3C /* OffsetCommitAPI.swift */; };
+		CFFE765E1C91813200217F3C /* OffsetFetchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76431C91813200217F3C /* OffsetFetchAPI.swift */; };
+		CFFE765F1C91813200217F3C /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76441C91813200217F3C /* Partition.swift */; };
+		CFFE76601C91813200217F3C /* ProduceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76451C91813200217F3C /* ProduceAPI.swift */; };
+		CFFE76611C91813200217F3C /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76461C91813200217F3C /* Topic.swift */; };
+		CFFE76621C91813200217F3C /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76471C91813200217F3C /* Variables.swift */; };
+		CFFE76631C91813200217F3C /* Wildcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFE76481C91813200217F3C /* Wildcard.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CFFE761D1C917FFC00217F3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFFE76081C917FFC00217F3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFFE76101C917FFC00217F3C;
+			remoteInfo = Franz;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CFFE76111C917FFC00217F3C /* Franz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Franz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFFE76141C917FFC00217F3C /* Franz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Franz.h; sourceTree = "<group>"; };
+		CFFE76161C917FFC00217F3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFFE761B1C917FFC00217F3C /* FranzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FranzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFFE76201C917FFC00217F3C /* FranzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FranzTests.swift; sourceTree = "<group>"; };
+		CFFE76221C917FFC00217F3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFFE762C1C91813200217F3C /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		CFFE762F1C91813200217F3C /* AdminAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminAPI.swift; sourceTree = "<group>"; };
+		CFFE76301C91813200217F3C /* Broker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Broker.swift; sourceTree = "<group>"; };
+		CFFE76311C91813200217F3C /* Cluster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cluster.swift; sourceTree = "<group>"; };
+		CFFE76321C91813200217F3C /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		CFFE76331C91813200217F3C /* Consumer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consumer.swift; sourceTree = "<group>"; };
+		CFFE76351C91813200217F3C /* CRC32.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRC32.swift; sourceTree = "<group>"; };
+		CFFE76361C91813200217F3C /* Enumerations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
+		CFFE76371C91813200217F3C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		CFFE76381C91813200217F3C /* FetchAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchAPI.swift; sourceTree = "<group>"; };
+		CFFE76391C91813200217F3C /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		CFFE763A1C91813200217F3C /* GroupCoordinatorAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCoordinatorAPI.swift; sourceTree = "<group>"; };
+		CFFE763B1C91813200217F3C /* GroupMembershipAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMembershipAPI.swift; sourceTree = "<group>"; };
+		CFFE763C1C91813200217F3C /* KafkaProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KafkaProtocol.swift; sourceTree = "<group>"; };
+		CFFE763D1C91813200217F3C /* KafkaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KafkaRequest.swift; sourceTree = "<group>"; };
+		CFFE763E1C91813200217F3C /* KafkaResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KafkaResponse.swift; sourceTree = "<group>"; };
+		CFFE763F1C91813200217F3C /* MessageSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSet.swift; sourceTree = "<group>"; };
+		CFFE76401C91813200217F3C /* MetadataAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataAPI.swift; sourceTree = "<group>"; };
+		CFFE76411C91813200217F3C /* OffsetAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetAPI.swift; sourceTree = "<group>"; };
+		CFFE76421C91813200217F3C /* OffsetCommitAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetCommitAPI.swift; sourceTree = "<group>"; };
+		CFFE76431C91813200217F3C /* OffsetFetchAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetFetchAPI.swift; sourceTree = "<group>"; };
+		CFFE76441C91813200217F3C /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
+		CFFE76451C91813200217F3C /* ProduceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProduceAPI.swift; sourceTree = "<group>"; };
+		CFFE76461C91813200217F3C /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		CFFE76471C91813200217F3C /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
+		CFFE76481C91813200217F3C /* Wildcard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wildcard.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CFFE760D1C917FFC00217F3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFFE76181C917FFC00217F3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFE761C1C917FFC00217F3C /* Franz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CFFE76071C917FFC00217F3C = {
+			isa = PBXGroup;
+			children = (
+				CFFE76131C917FFC00217F3C /* Franz */,
+				CFFE761F1C917FFC00217F3C /* FranzTests */,
+				CFFE76121C917FFC00217F3C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CFFE76121C917FFC00217F3C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE76111C917FFC00217F3C /* Franz.framework */,
+				CFFE761B1C917FFC00217F3C /* FranzTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CFFE76131C917FFC00217F3C /* Franz */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE762B1C91813200217F3C /* Assets */,
+				CFFE762D1C91813200217F3C /* Classes */,
+				CFFE76141C917FFC00217F3C /* Franz.h */,
+				CFFE76161C917FFC00217F3C /* Info.plist */,
+			);
+			path = Franz;
+			sourceTree = "<group>";
+		};
+		CFFE761F1C917FFC00217F3C /* FranzTests */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE76201C917FFC00217F3C /* FranzTests.swift */,
+				CFFE76221C917FFC00217F3C /* Info.plist */,
+			);
+			path = FranzTests;
+			sourceTree = "<group>";
+		};
+		CFFE762B1C91813200217F3C /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE762C1C91813200217F3C /* .gitkeep */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		CFFE762D1C91813200217F3C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE762F1C91813200217F3C /* AdminAPI.swift */,
+				CFFE76301C91813200217F3C /* Broker.swift */,
+				CFFE76311C91813200217F3C /* Cluster.swift */,
+				CFFE76321C91813200217F3C /* Connection.swift */,
+				CFFE76331C91813200217F3C /* Consumer.swift */,
+				CFFE76341C91813200217F3C /* Crypt */,
+				CFFE76361C91813200217F3C /* Enumerations.swift */,
+				CFFE76371C91813200217F3C /* Extensions.swift */,
+				CFFE76381C91813200217F3C /* FetchAPI.swift */,
+				CFFE76391C91813200217F3C /* Group.swift */,
+				CFFE763A1C91813200217F3C /* GroupCoordinatorAPI.swift */,
+				CFFE763B1C91813200217F3C /* GroupMembershipAPI.swift */,
+				CFFE763C1C91813200217F3C /* KafkaProtocol.swift */,
+				CFFE763D1C91813200217F3C /* KafkaRequest.swift */,
+				CFFE763E1C91813200217F3C /* KafkaResponse.swift */,
+				CFFE763F1C91813200217F3C /* MessageSet.swift */,
+				CFFE76401C91813200217F3C /* MetadataAPI.swift */,
+				CFFE76411C91813200217F3C /* OffsetAPI.swift */,
+				CFFE76421C91813200217F3C /* OffsetCommitAPI.swift */,
+				CFFE76431C91813200217F3C /* OffsetFetchAPI.swift */,
+				CFFE76441C91813200217F3C /* Partition.swift */,
+				CFFE76451C91813200217F3C /* ProduceAPI.swift */,
+				CFFE76461C91813200217F3C /* Topic.swift */,
+				CFFE76471C91813200217F3C /* Variables.swift */,
+				CFFE76481C91813200217F3C /* Wildcard.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		CFFE76341C91813200217F3C /* Crypt */ = {
+			isa = PBXGroup;
+			children = (
+				CFFE76351C91813200217F3C /* CRC32.swift */,
+			);
+			path = Crypt;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CFFE760E1C917FFC00217F3C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFE76151C917FFC00217F3C /* Franz.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CFFE76101C917FFC00217F3C /* Franz */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFFE76251C917FFC00217F3C /* Build configuration list for PBXNativeTarget "Franz" */;
+			buildPhases = (
+				CFFE760C1C917FFC00217F3C /* Sources */,
+				CFFE760D1C917FFC00217F3C /* Frameworks */,
+				CFFE760E1C917FFC00217F3C /* Headers */,
+				CFFE760F1C917FFC00217F3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Franz;
+			productName = Franz;
+			productReference = CFFE76111C917FFC00217F3C /* Franz.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		CFFE761A1C917FFC00217F3C /* FranzTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFFE76281C917FFC00217F3C /* Build configuration list for PBXNativeTarget "FranzTests" */;
+			buildPhases = (
+				CFFE76171C917FFC00217F3C /* Sources */,
+				CFFE76181C917FFC00217F3C /* Frameworks */,
+				CFFE76191C917FFC00217F3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CFFE761E1C917FFC00217F3C /* PBXTargetDependency */,
+			);
+			name = FranzTests;
+			productName = FranzTests;
+			productReference = CFFE761B1C917FFC00217F3C /* FranzTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CFFE76081C917FFC00217F3C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "benji-bou";
+				TargetAttributes = {
+					CFFE76101C917FFC00217F3C = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					CFFE761A1C917FFC00217F3C = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = CFFE760B1C917FFC00217F3C /* Build configuration list for PBXProject "Franz" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CFFE76071C917FFC00217F3C;
+			productRefGroup = CFFE76121C917FFC00217F3C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CFFE76101C917FFC00217F3C /* Franz */,
+				CFFE761A1C917FFC00217F3C /* FranzTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CFFE760F1C917FFC00217F3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFE76491C91813200217F3C /* .gitkeep in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFFE76191C917FFC00217F3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CFFE760C1C917FFC00217F3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFE76511C91813200217F3C /* Enumerations.swift in Sources */,
+				CFFE76611C91813200217F3C /* Topic.swift in Sources */,
+				CFFE765C1C91813200217F3C /* OffsetAPI.swift in Sources */,
+				CFFE76621C91813200217F3C /* Variables.swift in Sources */,
+				CFFE764F1C91813200217F3C /* Consumer.swift in Sources */,
+				CFFE76581C91813200217F3C /* KafkaRequest.swift in Sources */,
+				CFFE76561C91813200217F3C /* GroupMembershipAPI.swift in Sources */,
+				CFFE765D1C91813200217F3C /* OffsetCommitAPI.swift in Sources */,
+				CFFE76501C91813200217F3C /* CRC32.swift in Sources */,
+				CFFE76571C91813200217F3C /* KafkaProtocol.swift in Sources */,
+				CFFE765F1C91813200217F3C /* Partition.swift in Sources */,
+				CFFE76551C91813200217F3C /* GroupCoordinatorAPI.swift in Sources */,
+				CFFE76591C91813200217F3C /* KafkaResponse.swift in Sources */,
+				CFFE765E1C91813200217F3C /* OffsetFetchAPI.swift in Sources */,
+				CFFE76541C91813200217F3C /* Group.swift in Sources */,
+				CFFE765B1C91813200217F3C /* MetadataAPI.swift in Sources */,
+				CFFE76521C91813200217F3C /* Extensions.swift in Sources */,
+				CFFE76631C91813200217F3C /* Wildcard.swift in Sources */,
+				CFFE76601C91813200217F3C /* ProduceAPI.swift in Sources */,
+				CFFE764C1C91813200217F3C /* Broker.swift in Sources */,
+				CFFE764B1C91813200217F3C /* AdminAPI.swift in Sources */,
+				CFFE765A1C91813200217F3C /* MessageSet.swift in Sources */,
+				CFFE76531C91813200217F3C /* FetchAPI.swift in Sources */,
+				CFFE764D1C91813200217F3C /* Cluster.swift in Sources */,
+				CFFE764E1C91813200217F3C /* Connection.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFFE76171C917FFC00217F3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFE76211C917FFC00217F3C /* FranzTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CFFE761E1C917FFC00217F3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFFE76101C917FFC00217F3C /* Franz */;
+			targetProxy = CFFE761D1C917FFC00217F3C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CFFE76231C917FFC00217F3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		CFFE76241C917FFC00217F3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		CFFE76261C917FFC00217F3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Franz/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "benji-bou.Franz";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CFFE76271C917FFC00217F3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Franz/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "benji-bou.Franz";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CFFE76291C917FFC00217F3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FranzTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "benji-bou.FranzTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CFFE762A1C917FFC00217F3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FranzTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "benji-bou.FranzTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CFFE760B1C917FFC00217F3C /* Build configuration list for PBXProject "Franz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFFE76231C917FFC00217F3C /* Debug */,
+				CFFE76241C917FFC00217F3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFFE76251C917FFC00217F3C /* Build configuration list for PBXNativeTarget "Franz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFFE76261C917FFC00217F3C /* Debug */,
+				CFFE76271C917FFC00217F3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFFE76281C917FFC00217F3C /* Build configuration list for PBXNativeTarget "FranzTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFFE76291C917FFC00217F3C /* Debug */,
+				CFFE762A1C917FFC00217F3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CFFE76081C917FFC00217F3C /* Project object */;
+}
