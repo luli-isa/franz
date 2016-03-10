@@ -95,7 +95,7 @@ public class Cluster {
      - Parameter data:
     */
     
-    func sendData(topic : String, partition: Int32, data:[Int8]) {
+    public func sendData(topic : String, partition: Int32, data:[Int8]) {
         self.findTopicLeader(topic, partition: partition, {leader in
             let messages = MessageSet(values: [MessageSetItem(data: NSData(bytes:data, length:data.count))])
             leader.send(topic, partition: partition, batch:messages, clientId: self.clientId)
@@ -111,7 +111,7 @@ public class Cluster {
      - Parameter data:
      */
     
-    func sendData(topic : String, partition: Int32, data:NSData) {
+    public func sendData(topic : String, partition: Int32, data:NSData) {
         self.findTopicLeader(topic, partition: partition, {leader in
             let messages = MessageSet(values: [MessageSetItem(data: data)])
             leader.send(topic, partition: partition, batch:messages, clientId: self.clientId)
