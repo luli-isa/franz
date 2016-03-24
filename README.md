@@ -5,7 +5,12 @@
 [![License](https://img.shields.io/cocoapods/l/Franz.svg?style=flat)](http://cocoapods.org/pods/Franz)
 [![Platform](https://img.shields.io/cocoapods/p/Franz.svg?style=flat)](http://cocoapods.org/pods/Franz)
 
+
+
 ## Usage
+
+Carthage Compatible
+Swift2.2 Compatible
 
 Franz is an Apache Kafka 0.9.0 client for iOS and OSx.
 
