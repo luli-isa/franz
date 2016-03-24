@@ -12,7 +12,7 @@ import Foundation
 protocol VariableLengthDatable {
     var data: NSData { get }
     init()
-    static func fromBytes(var bytes: [UInt8]) -> VariableLengthDatable
+    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable
 }
 
 
@@ -26,7 +26,8 @@ protocol FixedLengthDatable {
 
 extension Int8: FixedLengthDatable {
     
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 1)
         var out: Int8 = 0
         data.getBytes(&out, length: sizeof(Int8.self))
@@ -45,7 +46,8 @@ extension Int8: FixedLengthDatable {
 
 extension UInt8: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 1)
         var out: UInt8 = 0
         data.getBytes(&out, length: sizeof(UInt8.self))
@@ -64,7 +66,8 @@ extension UInt8: FixedLengthDatable {
 
 extension Int16: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 2)
         var out: Int16 = 0
         data.getBytes(&out, length: sizeof(Int16.self))
@@ -83,7 +86,8 @@ extension Int16: FixedLengthDatable {
 
 extension UInt16: FixedLengthDatable {
     
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 2)
         var out: UInt16 = 0
         data.getBytes(&out, length: sizeof(UInt16.self))
@@ -102,7 +106,8 @@ extension UInt16: FixedLengthDatable {
 
 extension Int32: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 4)
         var out: Int32 = 0
         data.getBytes(&out, length: sizeof(Int32.self))
@@ -121,7 +126,8 @@ extension Int32: FixedLengthDatable {
 
 extension UInt32: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 4)
         var out: UInt32 = 0
         data.getBytes(&out, length: sizeof(UInt32.self))
