@@ -113,7 +113,7 @@ func crc32(crc: UInt32, buffer: UnsafePointer<UInt8>, length: Int) -> UInt32 {
     var buf = buffer
     func DO1() {
         let toBuf = buf.memory
-        buf++
+        buf += 1
         crc1 = crcTable[Int((crc1 ^ UInt32(toBuf)) & 0xFF)] ^ crc1 >> 8
     }
     func DO2() { DO1(); DO1(); }
@@ -125,9 +125,10 @@ func crc32(crc: UInt32, buffer: UnsafePointer<UInt8>, length: Int) -> UInt32 {
         len -= 8
     }
     if len != 0 {
-        repeat {
+        while len != 0 {
             DO1()
-        } while --len != 0
+            len -= 1
+        }
     }
     
     return crc1 ^ 0xffffffff;

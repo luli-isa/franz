@@ -70,7 +70,8 @@ class RegExp {
      
      - returns:    an array of matches or nil
      */
-    func match(var input: String) -> [String]? {
+    func match(input: String) -> [String]? {
+        var input = input
         input = input.stringByReplacingOccurrencesOfString("\n", withString: "\\n", options: NSStringCompareOptions.LiteralSearch, range: nil)
         
         var matches: [String] = [String]()
@@ -99,7 +100,8 @@ class RegExp {
      
      - returns:    an array of an array of matches or nil
      */
-    func scan(var input: String) -> [[String]]? {
+    func scan(input: String) -> [[String]]? {
+                var input = input
         input = input.stringByReplacingOccurrencesOfString("\n", withString: "\\n", options: NSStringCompareOptions.LiteralSearch, range: nil)
         
         var matches: [[String]] = [[String]]()
@@ -994,12 +996,12 @@ internal extension NSRange {
         if location < input.utf16.count {
             let startIndex = input.startIndex.advancedBy(location)
             let endIndex = input.startIndex.advancedBy(location + length)
-            let range = Range(start: startIndex, end: endIndex)
+            let range = startIndex..<endIndex
             //println(input.substringWithRange(range))
             return range
         }
         
-        return Range(start: input.startIndex, end: input.endIndex)
+        return input.startIndex..<input.endIndex
     }
 }
 
