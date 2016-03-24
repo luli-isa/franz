@@ -41,7 +41,8 @@ class KafkaRequest: NSObject {
         value: KafkaClass? = nil,
         apiVersion: ApiVersion = ApiVersion.DefaultVersion
     ) {
-        self._correlationId = KafkaInt32(value: ++KafkaRequest._correlationIdIndex)
+        KafkaRequest._correlationIdIndex += 1
+        self._correlationId = KafkaInt32(value: KafkaRequest._correlationIdIndex)
         self._apiKey = KafkaInt16(value: apiKey.rawValue)
         self._apiVersion = KafkaInt16(value: apiVersion.rawValue)
         self.value = value

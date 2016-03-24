@@ -146,7 +146,8 @@ extension UInt32: FixedLengthDatable {
 
 extension Int: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: sizeof(Int.self))
         var out: Int = 0
         data.getBytes(&out, length: sizeof(Int.self))
@@ -174,7 +175,8 @@ extension Int: FixedLengthDatable {
 
 extension Int64: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 8)
         var out: Int64 = 0
         data.getBytes(&out, length: sizeof(Int64.self))
@@ -193,7 +195,8 @@ extension Int64: FixedLengthDatable {
 
 extension UInt64: FixedLengthDatable {
 
-    init(var bytes: [UInt8]) {
+    init(bytes: [UInt8]) {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: 8)
         var out: UInt64 = 0
         data.getBytes(&out, length: sizeof(UInt64.self))
@@ -212,7 +215,8 @@ extension UInt64: FixedLengthDatable {
 
 extension String: VariableLengthDatable {
 
-    static func fromBytes(var bytes: [UInt8]) -> VariableLengthDatable {
+    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable {
+        var bytes = bytes
         let data = NSData(bytes: &bytes, length: bytes.count)
         let string = String(data: data, encoding: NSUTF8StringEncoding) ?? ""
         return self.init(string)
@@ -228,7 +232,8 @@ extension String: VariableLengthDatable {
 
 extension NSData: VariableLengthDatable {
 
-    static func fromBytes(var bytes: [UInt8]) -> VariableLengthDatable {
+    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable {
+        var bytes = bytes
         return NSData(bytes: &bytes, length: bytes.count)
     }
     
