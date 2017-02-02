@@ -12,17 +12,17 @@ import Foundation
     Used to ask for all messages before a certain time (ms). Pulled in descending order.
 */
 enum TimeOffset {
-    case Latest  /* the latest offset (i.e. the offset of the next coming message) */
-    case Earliest  /* earliest available offset; will always return a single element */
-    case Preceding(ms: Int64)
+    case latest  /* the latest offset (i.e. the offset of the next coming message) */
+    case earliest  /* earliest available offset; will always return a single element */
+    case preceding(ms: Int64)
     
     var value: Int64 {
         switch self {
-        case .Latest:
+        case .latest:
             return -1
-        case .Earliest:
+        case .earliest:
             return -2
-        case Preceding(let ms):
+        case .preceding(let ms):
             return ms
         }
     }
@@ -33,17 +33,17 @@ enum TimeOffset {
     The minimum number of bytes of messages that must be available to give a response.
 */
 enum MinBytes {
-    case None
-    case One
-    case Many(bytes: Int32)
+    case none
+    case one
+    case many(bytes: Int32)
     
     var value: Int32 {
         switch self {
-        case .None:
+        case .none:
             return 0
-        case .One:
+        case .one:
             return 1
-        case .Many(let bytes):
+        case .many(let bytes):
             return bytes
         }
     }
@@ -51,17 +51,17 @@ enum MinBytes {
 
 
 enum ReplicaId {
-    case None
-    case Node(id: Int32)
-    case Debug
+    case none
+    case node(id: Int32)
+    case debug
     
     var value: Int32 {
         switch self {
-        case None:
+        case .none:
             return -1
-        case .Debug:
+        case .debug:
             return -2
-        case .Node(let id):
+        case .node(let id):
             return id
         }
     }
@@ -71,38 +71,38 @@ enum ReplicaId {
     Built in Kafka error codes
 */
 enum KafkaErrorCode: Int16 {
-    case NoError = 0
-    case Unknown = -1
-    case OffsetOutOfRange = 1
-    case InvalidMessage = 2
-    case UnknownTopicOrPartition = 3
-    case InvalidMessageSize = 4
-    case LeaderNotAvailable = 5
-    case NotLeaderForPartition = 6
-    case RequestTimedOut = 7
-    case BrokerNotAvailable = 8
-    case ReplicaNotAvailable = 9
-    case MessageSizeTooLarge = 10
-    case StaleControllerEpochCode = 11
-    case OffsetMetadataTooLargeCode = 12
-    case GroupLoadInProgressCode = 14
-    case GroupCoordinatorNotAvailableCode = 15
-    case NotCoordinatorForGroupCode = 16
-    case InvalidTopicCode = 17
-    case RecordListTooLargeCode = 18
-    case NotEnoughReplicasCode = 19
-    case NotEnoughReplicasAfterAppendCode = 20
-    case InvalidRequiredAcksCode = 21
-    case IllegalGenerationCode = 22
-    case InconsistentGroupProtocolCode = 23
-    case InvalidGroupIdCode = 24
-    case UnknownMemberIdCode = 25
-    case InvalidSessionTimeoutCode = 26
-    case RebalanceInProgressCode = 27
-    case InvalidCommitOffsetSizeCode = 28
-    case TopicAuthorizationFailedCode = 29
-    case GroupAuthorizationFailedCode = 30
-    case ClusterAuthorizationFailedCode = 31
+    case noError = 0
+    case unknown = -1
+    case offsetOutOfRange = 1
+    case invalidMessage = 2
+    case unknownTopicOrPartition = 3
+    case invalidMessageSize = 4
+    case leaderNotAvailable = 5
+    case notLeaderForPartition = 6
+    case requestTimedOut = 7
+    case brokerNotAvailable = 8
+    case replicaNotAvailable = 9
+    case messageSizeTooLarge = 10
+    case staleControllerEpochCode = 11
+    case offsetMetadataTooLargeCode = 12
+    case groupLoadInProgressCode = 14
+    case groupCoordinatorNotAvailableCode = 15
+    case notCoordinatorForGroupCode = 16
+    case invalidTopicCode = 17
+    case recordListTooLargeCode = 18
+    case notEnoughReplicasCode = 19
+    case notEnoughReplicasAfterAppendCode = 20
+    case invalidRequiredAcksCode = 21
+    case illegalGenerationCode = 22
+    case inconsistentGroupProtocolCode = 23
+    case invalidGroupIdCode = 24
+    case unknownMemberIdCode = 25
+    case invalidSessionTimeoutCode = 26
+    case rebalanceInProgressCode = 27
+    case invalidCommitOffsetSizeCode = 28
+    case topicAuthorizationFailedCode = 29
+    case groupAuthorizationFailedCode = 30
+    case clusterAuthorizationFailedCode = 31
     
     var code: Int16 {
         return self.rawValue
@@ -110,130 +110,130 @@ enum KafkaErrorCode: Int16 {
     
     var description: String {
         switch self {
-        case NoError:
+        case .noError:
             return "No error."
-        case Unknown:
+        case .unknown:
             return "An unexpected server error"
-        case OffsetOutOfRange:
+        case .offsetOutOfRange:
             return "The requested offset is outside the range of offsets maintained" +
                 " by the server for the given topic/partition."
-        case InvalidMessage:
+        case .invalidMessage:
             return "Message contents does not match its CRC"
-        case UnknownTopicOrPartition:
+        case .unknownTopicOrPartition:
             return "Topic or partition does not exist on this broker."
-        case InvalidMessageSize:
+        case .invalidMessageSize:
             return "Message has a negative size"
-        case LeaderNotAvailable:
+        case .leaderNotAvailable:
             return "This error is thrown if we are in the middle of a leadership election" +
                 " and there is currently no leader for this partition and hence it is unavailable for writes."
-        case NotLeaderForPartition:
+        case .notLeaderForPartition:
             return "This error is thrown if the client attempts to send messages to a " +
                 " replica that is not the leader for some partition. It indicates that the clients metadata is out of date."
-        case RequestTimedOut:
+        case .requestTimedOut:
             return "This error is thrown if the request exceeds the user-specified time limit in the request."
-        case BrokerNotAvailable:
+        case .brokerNotAvailable:
             return "This is not a client facing error and is used mostly by tools when a broker is not alive."
-        case ReplicaNotAvailable:
+        case .replicaNotAvailable:
             return "If replica is expected on a broker, but is not (this can be safely ignored)."
-        case MessageSizeTooLarge:
+        case .messageSizeTooLarge:
             return "The server has a configurable maximum message size to avoid unbounded memory allocation. This error is thrown if the client attempt to produce a message larger than this maximum."
-        case StaleControllerEpochCode:
+        case .staleControllerEpochCode:
             return "Internal error."
-        case OffsetMetadataTooLargeCode:
+        case .offsetMetadataTooLargeCode:
             return "String larger than configured maximum for offset metadata"
-        case GroupLoadInProgressCode:
+        case .groupLoadInProgressCode:
             return "The broker returns this error code for an offset fetch request if it is still loading offsets (after a leader change for that offsets topic partition), or in response to group membership requests (such as heartbeats) when group metadata is being loaded by the coordinator."
-        case GroupCoordinatorNotAvailableCode:
+        case .groupCoordinatorNotAvailableCode:
             return "Offsets topic has not yet been created or group coordinator is not active."
-        case NotCoordinatorForGroupCode:
+        case .notCoordinatorForGroupCode:
             return "Broke is not group coordinator for offset fetch or commit request."
-        case InvalidTopicCode:
+        case .invalidTopicCode:
             return "For a request which attempts to access an invalid topic (e.g. one which has an illegal name), or if an attempt is made to write to an internal topic (such as the consumer offsets topic)."
-        case RecordListTooLargeCode:
+        case .recordListTooLargeCode:
             return "Request exceeds the maximum configured segment size."
-        case NotEnoughReplicasCode:
+        case .notEnoughReplicasCode:
             return "The number of in-sync replicas is lower than the configured minimum and requiredAcks is -1."
-        case NotEnoughReplicasAfterAppendCode:
+        case .notEnoughReplicasAfterAppendCode:
             return "Message was written to the log, but with fewer in-sync replicas than required."
-        case InvalidRequiredAcksCode:
+        case .invalidRequiredAcksCode:
             return "RequiredAcks is invalid (anything other than -1, 1, or 0)."
-        case IllegalGenerationCode:
+        case .illegalGenerationCode:
             return "Generation id provided in the request is not the current generation."
-        case InconsistentGroupProtocolCode:
+        case .inconsistentGroupProtocolCode:
             return "Protocol type or set of protocols is not compatible with the current group."
-        case InvalidGroupIdCode:
+        case .invalidGroupIdCode:
             return "The groupId is empty or null."
-        case UnknownMemberIdCode:
+        case .unknownMemberIdCode:
             return "The memberId is not in the current generation."
-        case InvalidSessionTimeoutCode:
+        case .invalidSessionTimeoutCode:
             return "The requested session timeout is outside of the allowed range on the broker"
-        case RebalanceInProgressCode:
+        case .rebalanceInProgressCode:
             return "Client that it should rejoin the group."
-        case InvalidCommitOffsetSizeCode:
+        case .invalidCommitOffsetSizeCode:
             return "Offset commit rejected due to oversize metadata."
-        case TopicAuthorizationFailedCode:
+        case .topicAuthorizationFailedCode:
             return "The client is not authorized to access the requested topic."
-        case GroupAuthorizationFailedCode:
+        case .groupAuthorizationFailedCode:
             return "The client is not authorized to access a particular groupId."
-        case ClusterAuthorizationFailedCode:
+        case .clusterAuthorizationFailedCode:
             return "The client is not authorized to use an inter-broker or administrative API."
         }
     }
     
     var retriable: Bool {
         switch self {
-        case NoError: return false
-        case Unknown: return false
-        case OffsetOutOfRange: return false
-        case InvalidMessage: return true
-        case UnknownTopicOrPartition: return true
-        case InvalidMessageSize: return false
-        case LeaderNotAvailable: return true
-        case NotLeaderForPartition: return true
-        case RequestTimedOut: return true
-        case BrokerNotAvailable: return false
-        case ReplicaNotAvailable: return false
-        case MessageSizeTooLarge: return false
-        case StaleControllerEpochCode: return false
-        case OffsetMetadataTooLargeCode: return false
-        case GroupLoadInProgressCode: return true
-        case GroupCoordinatorNotAvailableCode: return true
-        case NotCoordinatorForGroupCode: return true
-        case InvalidTopicCode: return false
-        case RecordListTooLargeCode: return false
-        case NotEnoughReplicasCode: return true
-        case NotEnoughReplicasAfterAppendCode: return true
-        case InvalidRequiredAcksCode: return false
-        case IllegalGenerationCode: return false
-        case InconsistentGroupProtocolCode: return false
-        case InvalidGroupIdCode: return false
-        case UnknownMemberIdCode: return false
-        case InvalidSessionTimeoutCode: return false
-        case RebalanceInProgressCode: return false
-        case InvalidCommitOffsetSizeCode: return false
-        case TopicAuthorizationFailedCode: return false
-        case GroupAuthorizationFailedCode: return false
-        case ClusterAuthorizationFailedCode: return false
+        case .noError: return false
+        case .unknown: return false
+        case .offsetOutOfRange: return false
+        case .invalidMessage: return true
+        case .unknownTopicOrPartition: return true
+        case .invalidMessageSize: return false
+        case .leaderNotAvailable: return true
+        case .notLeaderForPartition: return true
+        case .requestTimedOut: return true
+        case .brokerNotAvailable: return false
+        case .replicaNotAvailable: return false
+        case .messageSizeTooLarge: return false
+        case .staleControllerEpochCode: return false
+        case .offsetMetadataTooLargeCode: return false
+        case .groupLoadInProgressCode: return true
+        case .groupCoordinatorNotAvailableCode: return true
+        case .notCoordinatorForGroupCode: return true
+        case .invalidTopicCode: return false
+        case .recordListTooLargeCode: return false
+        case .notEnoughReplicasCode: return true
+        case .notEnoughReplicasAfterAppendCode: return true
+        case .invalidRequiredAcksCode: return false
+        case .illegalGenerationCode: return false
+        case .inconsistentGroupProtocolCode: return false
+        case .invalidGroupIdCode: return false
+        case .unknownMemberIdCode: return false
+        case .invalidSessionTimeoutCode: return false
+        case .rebalanceInProgressCode: return false
+        case .invalidCommitOffsetSizeCode: return false
+        case .topicAuthorizationFailedCode: return false
+        case .groupAuthorizationFailedCode: return false
+        case .clusterAuthorizationFailedCode: return false
         }
     }
 }
 
 
 enum RequestAcknowledgement {
-    case NoResponse
-    case Wait
-    case Block
-    case BlockUntil(number: Int16)
+    case noResponse
+    case wait
+    case block
+    case blockUntil(number: Int16)
     
     var value: Int16 {
         switch self {
-        case .NoResponse:
+        case .noResponse:
             return 0
-        case .Wait:
+        case .wait:
             return 1
-        case .Block:
+        case .block:
             return -1
-        case .BlockUntil(let number):
+        case .blockUntil(let number):
             return number
         }
     }
@@ -241,31 +241,31 @@ enum RequestAcknowledgement {
 
 
 enum CompressionCodec: Int8 {
-    case None = 0
-    case GZIP = 1
-    case Snappy = 2
+    case none = 0
+    case gzip = 1
+    case snappy = 2
 }
 
 
 enum ApiKey: Int16 {
-    case ProduceRequest = 0
-    case FetchRequest = 1
-    case OffsetRequest = 2
-    case MetadataRequest = 3
-    case OffsetCommitRequest = 8
-    case OffsetFetchRequest = 9
-    case GroupCoordinatorRequest = 10
-    case JoinGroupRequest = 11
-    case HeartbeatRequest = 12
-    case LeaveGroupRequest = 13
-    case SyncGroupRequest = 14
-    case DescribeGroupsRequest = 15
-    case ListGroupsRequest = 16
+    case produceRequest = 0
+    case fetchRequest = 1
+    case offsetRequest = 2
+    case metadataRequest = 3
+    case offsetCommitRequest = 8
+    case offsetFetchRequest = 9
+    case groupCoordinatorRequest = 10
+    case joinGroupRequest = 11
+    case heartbeatRequest = 12
+    case leaveGroupRequest = 13
+    case syncGroupRequest = 14
+    case describeGroupsRequest = 15
+    case listGroupsRequest = 16
 }
 
 
 enum ApiVersion: Int16 {
-    case DefaultVersion = 0
+    case defaultVersion = 0
 }
 
 
@@ -273,14 +273,14 @@ enum ApiVersion: Int16 {
     Group Protocols
 **/
 public enum GroupProtocol {
-    case Consumer
-    case Custom(name: String)
+    case consumer
+    case custom(name: String)
 
     var value: String {
         switch self {
-        case Consumer:
+        case .consumer:
             return "consumer"
-        case Custom(let name):
+        case .custom(let name):
             return name
         }
     }

@@ -10,15 +10,15 @@ import Foundation
 
 class ListGroupsRequest: KafkaRequest {
     init() {
-        super.init(apiKey: ApiKey.ListGroupsRequest)
+        super.init(apiKey: ApiKey.listGroupsRequest)
     }
 }
 
 
 class ListGroupsResponse: KafkaResponse {
     
-    private var _errorCode: KafkaInt16
-    private var _groups: KafkaArray<ListedGroup>
+    fileprivate var _errorCode: KafkaInt16
+    fileprivate var _groups: KafkaArray<ListedGroup>
     
     var error: KafkaErrorCode? {
         return KafkaErrorCode(rawValue: _errorCode.value)
@@ -34,7 +34,7 @@ class ListGroupsResponse: KafkaResponse {
         return groups
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _errorCode = KafkaInt16(bytes: &bytes)
         _groups = KafkaArray(bytes: &bytes)
         super.init(bytes: &bytes)
@@ -45,11 +45,11 @@ class ListGroupsResponse: KafkaResponse {
             self._groups.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._errorCode.data)
-        data.appendData(self._groups.data)
-        return data
+        data.append(self._errorCode.data as Data)
+        data.append(self._groups.data as Data)
+        return data as Data
     }()
     
     override var description: String {
@@ -63,8 +63,8 @@ class ListGroupsResponse: KafkaResponse {
 
 
 class ListedGroup: KafkaClass {
-    private var _groupId: KafkaString
-    private var _protocolType: KafkaString
+    fileprivate var _groupId: KafkaString
+    fileprivate var _protocolType: KafkaString
     
     var id: String {
         return _groupId.value ?? String()
@@ -74,7 +74,7 @@ class ListedGroup: KafkaClass {
         return _protocolType.value ?? String()
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _groupId = KafkaString(bytes: &bytes)
         _protocolType = KafkaString(bytes: &bytes)
     }
@@ -86,11 +86,11 @@ class ListedGroup: KafkaClass {
         
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._groupId.data)
-        data.appendData(self._protocolType.data)
-        return data
+        data.append(self._groupId.data as Data)
+        data.append(self._protocolType.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -111,13 +111,13 @@ class DescribeGroupsRequest: KafkaRequest {
     }
 
     init(value: DescribeGroupsRequestMessage) {
-        super.init(apiKey: ApiKey.DescribeGroupsRequest, value: value)
+        super.init(apiKey: ApiKey.describeGroupsRequest, value: value)
     }
 }
 
 
 class DescribeGroupsRequestMessage: KafkaClass {
-    private var _groupIds: KafkaArray<KafkaString>
+    fileprivate var _groupIds: KafkaArray<KafkaString>
     
     init(groupIds: [String]) {
         var values = [KafkaString]()
@@ -127,18 +127,18 @@ class DescribeGroupsRequestMessage: KafkaClass {
         _groupIds = KafkaArray(values: values)
     }
     
-    required init(inout bytes: [UInt8]) {
-        _groupIds = KafkaArray(bytes: &bytes)
+    required init(bytes: inout [UInt8]) {
+        _groupIds = KafkaArray(bytes: &bytes )
     }
     
     lazy var length: Int = {
         return  self._groupIds.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._groupIds.data)
-        return data
+        data.append(self._groupIds.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -148,13 +148,13 @@ class DescribeGroupsRequestMessage: KafkaClass {
 
 
 class DescribeGroupsResponse: KafkaResponse {
-    private var _groups: KafkaArray<GroupStateResponse>
+    fileprivate var _groups: KafkaArray<GroupStateResponse>
     
     var states: [GroupStateResponse] {
         return _groups.values
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _groups = KafkaArray(bytes: &bytes)
         super.init(bytes: &bytes)
     }
@@ -163,10 +163,10 @@ class DescribeGroupsResponse: KafkaResponse {
         return self._groups.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._groups.data)
-        return data
+        data.append(self._groups.data as Data)
+        return data as Data
     }()
     
     override var description: String {
@@ -177,12 +177,12 @@ class DescribeGroupsResponse: KafkaResponse {
 
 
 class GroupStateResponse: KafkaClass {
-    private var _errorCode: KafkaInt16
-    private var _groupId: KafkaString
-    private var _state: KafkaString
-    private var _protocolType: KafkaString
-    private var _protocol: KafkaString
-    private var _members: KafkaArray<GroupMemberResponse>
+    fileprivate var _errorCode: KafkaInt16
+    fileprivate var _groupId: KafkaString
+    fileprivate var _state: KafkaString
+    fileprivate var _protocolType: KafkaString
+    fileprivate var _protocol: KafkaString
+    fileprivate var _members: KafkaArray<GroupMemberResponse>
     
     var id: String? {
         return _groupId.value
@@ -195,9 +195,9 @@ class GroupStateResponse: KafkaClass {
     var protocolType: GroupProtocol? {
         if let type = _protocolType.value {
             if type == "consumer" {
-                return GroupProtocol.Consumer
+                return GroupProtocol.consumer
             } else {
-                return GroupProtocol.Custom(name: type)
+                return GroupProtocol.custom(name: type)
             }
         } else {
             return nil
@@ -220,7 +220,7 @@ class GroupStateResponse: KafkaClass {
         return _members.values
     }
 
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _errorCode = KafkaInt16(bytes: &bytes)
         _groupId = KafkaString(bytes: &bytes)
         _state = KafkaString(bytes: &bytes)
@@ -239,11 +239,11 @@ class GroupStateResponse: KafkaClass {
             self._members.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._groupId.data)
-        data.appendData(self._protocolType.data)
-        return data
+        data.append(self._groupId.data as Data)
+        data.append(self._protocolType.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -260,11 +260,11 @@ class GroupStateResponse: KafkaClass {
 
 
 class GroupMemberResponse: KafkaClass {
-    private var _memberId: KafkaString
-    private var _clientId: KafkaString
-    private var _clientHost: KafkaString
-    private var _memberMetadata: KafkaBytes
-    private var _memberAssignment: KafkaBytes
+    fileprivate var _memberId: KafkaString
+    fileprivate var _clientId: KafkaString
+    fileprivate var _clientHost: KafkaString
+    fileprivate var _memberMetadata: KafkaBytes
+    fileprivate var _memberAssignment: KafkaBytes
     
     var memberId: String {
         return _memberId.value ?? String()
@@ -278,7 +278,7 @@ class GroupMemberResponse: KafkaClass {
         return _clientHost.value ?? String()
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _memberId = KafkaString(bytes: &bytes)
         _clientId = KafkaString(bytes: &bytes)
         _clientHost = KafkaString(bytes: &bytes)
@@ -295,9 +295,9 @@ class GroupMemberResponse: KafkaClass {
             self._memberAssignment.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        return data
+        return data as Data
     }()
     
     lazy var description: String = {

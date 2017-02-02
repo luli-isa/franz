@@ -9,11 +9,11 @@
 import Foundation
 
 class Partition: KafkaClass {
-    private var _partitionErrorCode: KafkaInt16
-    private var _partitionId: KafkaInt32
-    private var _leader: KafkaInt32
-    private var _replicas: KafkaArray<KafkaInt32>
-    private var _isr: KafkaArray<KafkaInt32>
+    fileprivate var _partitionErrorCode: KafkaInt16
+    fileprivate var _partitionId: KafkaInt32
+    fileprivate var _leader: KafkaInt32
+    fileprivate var _replicas: KafkaArray<KafkaInt32>
+    fileprivate var _isr: KafkaArray<KafkaInt32>
 
     var error: KafkaErrorCode? {
         if let error = KafkaErrorCode(rawValue: _partitionErrorCode.value) {
@@ -73,28 +73,28 @@ class Partition: KafkaClass {
         for replica in replicas {
             tempReplicas.append(KafkaInt32(value: Int32(replica)))
         }
-        _replicas = KafkaArray<KafkaInt32>(values: tempReplicas)
+        _replicas = KafkaArray<KafkaInt32>(values: tempReplicas )
         
         var tempIsr = [KafkaInt32]()
         for value in isr {
             tempIsr.append(KafkaInt32(value: Int32(value)))
         }
-        _isr = KafkaArray<KafkaInt32>(values: tempIsr)
+        _isr = KafkaArray<KafkaInt32>(values: tempIsr )
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _partitionErrorCode = KafkaInt16(bytes: &bytes)
         _partitionId = KafkaInt32(bytes: &bytes)
         _leader = KafkaInt32(bytes: &bytes)
-        _replicas = KafkaArray(bytes: &bytes)
-        _isr = KafkaArray(bytes: &bytes)
+        _replicas = KafkaArray(bytes: &bytes )
+        _isr = KafkaArray(bytes: &bytes )
     }
     
     var length: Int {
         return _partitionErrorCode.length + _partitionId.length + _leader.length + _replicas.length + _isr.length
     }
     
-    var data: NSData {
-        return NSData()
+    var data: Data {
+        return Data()
     }
 }

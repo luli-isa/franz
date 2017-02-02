@@ -9,15 +9,15 @@
 import Foundation
 
 
-public class Topic: NSObject {
-    private var _name: String
-    private var _partitions: [Int32]
+open class Topic: NSObject {
+    fileprivate var _name: String
+    fileprivate var _partitions: [Int32]
     
-    public var name: String {
+    open var name: String {
         return _name
     }
     
-    public var partitions: [Int32] {
+    open var partitions: [Int32] {
         return _partitions
     }
     
@@ -28,9 +28,9 @@ public class Topic: NSObject {
 }
 
 internal class KafkaTopic: KafkaClass {
-    private var _errorCode: KafkaInt16
-    private var _topicName: KafkaString
-    private var _partitionMetadata: KafkaArray<Partition>
+    fileprivate var _errorCode: KafkaInt16
+    fileprivate var _topicName: KafkaString
+    fileprivate var _partitionMetadata: KafkaArray<Partition>
     
     var error: KafkaErrorCode? {
         if let error = KafkaErrorCode(rawValue: _errorCode.value) {
@@ -71,20 +71,21 @@ internal class KafkaTopic: KafkaClass {
     init(errorCode: Int, name: String, partitionMetadata: [Partition]) {
         self._errorCode = KafkaInt16(value: Int16(errorCode))
         self._topicName = KafkaString(value: name)
+        //self._partitionMetadata = KafkaArray(values: partitionMetadata as! [_])
         self._partitionMetadata = KafkaArray(values: partitionMetadata)
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _errorCode = KafkaInt16(bytes: &bytes)
         _topicName = KafkaString(bytes: &bytes)
-        _partitionMetadata = KafkaArray(bytes: &bytes)
+        _partitionMetadata = KafkaArray(bytes: &bytes )
     }
     
     lazy var length: Int = {
         return self._errorCode.length
     }()
     
-    var data: NSData {
-        return NSData()
+    var data: Data {
+        return Data()
     }
 }

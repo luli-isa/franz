@@ -11,34 +11,34 @@ import Foundation
 /**
     Base class for all Client Groups.
 */
-public class Group {
-    private var _broker: Broker
-    private var _clientId: String
-    private var _groupProtocol: GroupProtocol
-    private var _groupId: String
-    private var _generationId: Int32
-    private var _version: ApiVersion = ApiVersion.DefaultVersion
+open class Group {
+    fileprivate var _broker: Broker
+    fileprivate var _clientId: String
+    fileprivate var _groupProtocol: GroupProtocol
+    fileprivate var _groupId: String
+    fileprivate var _generationId: Int32
+    fileprivate var _version: ApiVersion = ApiVersion.defaultVersion
 
-    private var _state: GroupState?
+    fileprivate var _state: GroupState?
 
     /**
         Group Protocol
     */
-    public var groupProtocol: String {
+    open var groupProtocol: String {
         return _groupProtocol.value
     }
 
     /**
         Generation Id
     */
-    public var generationId: Int32 {
+    open var generationId: Int32 {
         return _generationId
     }
 
     /**
         Group Id
     */
-    public var id: String {
+    open var id: String {
         return _groupId
     }
     
@@ -61,7 +61,7 @@ public class Group {
      
         - Parameter callback:   a closure which takes a group id and a state of that group as its parameters
     */
-    public func getState(callback: (String, GroupState) -> ()) {
+    open func getState(_ callback: @escaping (String, GroupState) -> ()) {
         _broker.describeGroups(self.id, clientId: _clientId) { id, state in
             self._state = state
             callback(id, state)
@@ -73,7 +73,7 @@ public class Group {
 /**
     A Consumer Group
 */
-public class ConsumerGroup: Group {
+open class ConsumerGroup: Group {
     internal init(
         broker: Broker,
         clientId: String,
@@ -83,7 +83,7 @@ public class ConsumerGroup: Group {
         super.init(
             broker: broker,
             clientId: clientId,
-            groupProtocol: GroupProtocol.Consumer,
+            groupProtocol: GroupProtocol.consumer,
             groupId: groupId,
             generationId: generationId
         )
@@ -94,21 +94,21 @@ public class ConsumerGroup: Group {
 /**
     An abstraction of a Broker's relationship to a group.
 */
-public class GroupMembership {
+open class GroupMembership {
     var _group: Group
     var _memberId: String
     
     /**
         A Group
     */
-    public var group: Group {
+    open var group: Group {
         return _group
     }
 
     /**
         The Broker's id
     */
-    public var memberId: String {
+    open var memberId: String {
         return _memberId
     }
     
@@ -120,9 +120,9 @@ public class GroupMembership {
     /**
         Sync the broker with the Group Coordinator
     */
-    public func sync(
-        topics: [String: [Int32]],
-        data: NSData = NSData(),
+    open func sync(
+        _ topics: [String: [Int32]],
+        data: Data = Data(),
         callback: (() -> ())? = nil
     ) {
         group._broker.syncGroup(
@@ -142,7 +142,7 @@ public class GroupMembership {
      
         - Parameter callback:   called when the group has successfully been left
     */
-    public func leave(callback: (() -> ())? = nil) {
+    open func leave(_ callback: (() -> ())? = nil) {
         group._broker.leaveGroup(
             _group.id,
             memberId: memberId,
@@ -156,7 +156,7 @@ public class GroupMembership {
      
         - Parameter callback:   called when the heartbeat request has successfully completed
     */
-    public func heartbeat(callback: (() -> ())? = nil) {
+    open func heartbeat(_ callback: (() -> ())? = nil) {
         group._broker.heartbeatRequest(
             _group.id,
             generationId:_group._generationId,

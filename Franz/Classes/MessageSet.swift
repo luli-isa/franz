@@ -10,7 +10,7 @@ import Foundation
 
 
 class MessageSet: KafkaClass {
-    private var _values: [MessageSetItem]
+    fileprivate var _values: [MessageSetItem]
     
     var messages: [Message] {
         var messages = [Message]()
@@ -26,7 +26,7 @@ class MessageSet: KafkaClass {
         self._values = values
     }
 
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _values = [MessageSetItem]()
         
         while bytes.count > 0 {
@@ -48,21 +48,21 @@ class MessageSet: KafkaClass {
         return totalLength
     }()
     
-    lazy var valueLengthData: NSData = {
-        return Int32(self.valueLength).data
+    lazy var valueLengthData: Data = {
+        return (Int32(self.valueLength).data as Data)
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         var data = NSMutableData(capacity: self.length)!
         
-        data.appendData(self.valueLengthData)
+        data.append(self.valueLengthData)
         
         for value in self._values {
             print("Appending \(value)")
-            data.appendData(value.data)
+            data.append(value.data)
         }
         
-        return data
+        return data as Data
     }()
     
     var description: String {
@@ -94,19 +94,19 @@ class MessageSetItem: KafkaClass {
         self._value = KafkaMessage(value: value, key: key)
     }
 
-    init(data: NSData, key: NSData? = nil, offset: Int = 0) {
+    init(data: Data, key: Data? = nil, offset: Int = 0) {
         self._offset = KafkaInt64(value: Int64(offset))
         self._value = KafkaMessage(data: data, key: key)
     }
 
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _offset = KafkaInt64(bytes: &bytes)
         _size = KafkaInt32(bytes: &bytes)
         _value = KafkaMessage(bytes: &bytes)
     }
     
-    lazy var messageSizeData: NSData = {
-        return Int32(self._value.length).data
+    lazy var messageSizeData: Data = {
+        return (Int32(self._value.length).data as Data)
     }()
     
     let messageSizeDataLength = 4
@@ -118,13 +118,13 @@ class MessageSetItem: KafkaClass {
             (self._size != nil ? self._size!.length : 0)
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         var data = NSMutableData(capacity: self.length)!
         
-        data.appendData(self._offset.data)
-        data.appendData(self.messageSizeData)
-        data.appendData(self._value.data)
-        return data
+        data.append(self._offset.data as Data)
+        data.append(self.messageSizeData)
+        data.append(self._value.data)
+        return data as Data
     }()
     
     var description: String {
@@ -137,24 +137,24 @@ class MessageSetItem: KafkaClass {
 }
 
 class KafkaMessage: KafkaClass {
-    private var _key: KafkaBytes
-    private var _value: KafkaBytes
-    private var _magicByte: KafkaInt8
-    private var _attributes: KafkaInt8
-    private var _crc: KafkaUInt32! = nil
+    fileprivate var _key: KafkaBytes
+    fileprivate var _value: KafkaBytes
+    fileprivate var _magicByte: KafkaInt8
+    fileprivate var _attributes: KafkaInt8
+    fileprivate var _crc: KafkaUInt32! = nil
     
     /**
         Message data
     */
-    var value: NSData {
-        return _value.valueData
+    var value: Data {
+        return _value.valueData as Data
     }
 
     /**
         Message key
      */
-    var key: NSData? {
-        return _key.valueData
+    var key: Data? {
+        return _key.valueData as Data
     }
 
     /**
@@ -163,8 +163,8 @@ class KafkaMessage: KafkaClass {
         - Parameter data:   an NSData object
         - Parameter key:    an optional key String. Can be used for partition assignment.
      */
-    init(data: NSData, key: NSData? = nil) {
-        self._attributes = KafkaInt8(value: CompressionCodec.None.rawValue)
+    init(data: Data, key: Data? = nil) {
+        self._attributes = KafkaInt8(value: CompressionCodec.none.rawValue)
         self._magicByte = KafkaInt8(value: 0)
         self._key = KafkaBytes(data: key)
         self._value = KafkaBytes(data: data)
@@ -177,7 +177,7 @@ class KafkaMessage: KafkaClass {
         - Parameter key:    an optional key String. Can be used for partition assignment.
      */
     init(value: String, key: String? = nil) {
-        self._attributes = KafkaInt8(value: CompressionCodec.None.rawValue)
+        self._attributes = KafkaInt8(value: CompressionCodec.none.rawValue)
         self._magicByte = KafkaInt8(value: 0)
         self._key = KafkaBytes(value: key)
         self._value = KafkaBytes(value: value)
@@ -189,7 +189,7 @@ class KafkaMessage: KafkaClass {
         - Parameter value:  String value
         - Parameter key:    an optional key String. Can be used for partition assignment.
      */
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _crc = KafkaUInt32(bytes: &bytes)
         _magicByte = KafkaInt8(bytes: &bytes)
         _attributes = KafkaInt8(bytes: &bytes)
@@ -208,19 +208,19 @@ class KafkaMessage: KafkaClass {
             self._value.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         var valueData = NSMutableData(capacity: Int(self.valueLength))!
-        valueData.appendData(self._magicByte.data)
-        valueData.appendData(self._attributes.data)
-        valueData.appendData(self._key.data)
-        valueData.appendData(self._value.data)
+        valueData.append(self._magicByte.data as Data)
+        valueData.append(self._attributes.data as Data)
+        valueData.append(self._key.data as Data)
+        valueData.append(self._value.data as Data)
         
-        self._crc = KafkaUInt32(value: CRC32(data: valueData).crc)
+        self._crc = KafkaUInt32(value: CRC32(data: valueData as Data).crc)
         
         var data = NSMutableData(capacity: Int(self.length))!
-        data.appendData(self._crc.data)
-        data.appendData(valueData)
-        return data
+        data.append(self._crc.data as Data)
+        data.append(valueData as Data)
+        return data as Data
     }()
     
     var description: String {
@@ -236,21 +236,21 @@ class KafkaMessage: KafkaClass {
 /**
     A Message pulled from the Kafka Server
 */
-public class Message: NSObject {
-    private var _key: NSData?
-    private var _value: NSData
+open class Message: NSObject {
+    fileprivate var _key: Data?
+    fileprivate var _value: Data
     
     /**
         Message data
     */
-    public var value: NSData {
-        return _value ?? NSData()
+    open var value: Data {
+        return _value 
     }
 
     /**
         Message key
      */
-    public var key: NSData? {
+    open var key: Data? {
         return _key
     }
 
@@ -260,7 +260,7 @@ public class Message: NSObject {
         - Parameter data:   an NSData object
         - Parameter key:    an optional key String. Can be used for partition assignment.
     */
-    internal init(data: NSData, key: NSData? = nil) {
+    internal init(data: Data, key: Data? = nil) {
         self._key = key
         self._value = data
     }

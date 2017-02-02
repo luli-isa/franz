@@ -35,7 +35,7 @@ class ProduceRequest: KafkaRequest {
         }
         
         super.init(
-            apiKey: ApiKey.ProduceRequest,
+            apiKey: ApiKey.produceRequest,
             value: ProduceRequestMessage(values: kafkaTopicalMessageSets)
         )
     }
@@ -52,12 +52,12 @@ class ProduceRequestMessage: KafkaClass {
         timeout: Int32 = Int32(0x05DC)
     ) {
         self.values = KafkaArray(values: values)
-        self.requestAcks = KafkaInt16(value: RequestAcknowledgement.NoResponse.value)
+        self.requestAcks = KafkaInt16(value: RequestAcknowledgement.noResponse.value)
         self.timeout = KafkaInt32(value: timeout)
     }
 
-    required init(inout bytes: [UInt8]) {
-        values = KafkaArray(bytes: &bytes)
+    required init(bytes: inout [UInt8]) {
+        values = KafkaArray(bytes: &bytes )
         requestAcks = KafkaInt16(bytes: &bytes)
         timeout = KafkaInt32(bytes: &bytes)
     }
@@ -66,14 +66,14 @@ class ProduceRequestMessage: KafkaClass {
         return requestAcks.length + timeout.length + values.length
     }
     
-    var data: NSData {
+    var data: Data {
         let data = NSMutableData(capacity: length)!
 
-        data.appendData(requestAcks.data)
-        data.appendData(timeout.data)
-        data.appendData(values.data)
+        data.append(requestAcks.data as Data)
+        data.append(timeout.data as Data)
+        data.append(values.data as Data)
         
-        return data
+        return data as Data
     }
 
     var description: String {
@@ -85,8 +85,8 @@ class ProduceResponse: KafkaResponse {
 
     var values: KafkaArray<TopicalResponse>
     
-    required init(inout bytes: [UInt8]) {
-        values = KafkaArray(bytes: &bytes)
+    required init(bytes: inout [UInt8]) {
+        values = KafkaArray(bytes: &bytes )
         super.init(bytes: &bytes)
     }
     
@@ -97,8 +97,8 @@ class ProduceResponse: KafkaResponse {
 
 class TopicalResponse: KafkaClass {
     
-    private var _topicName: KafkaString
-    private var _partitions: KafkaArray<PartitionedResponse>
+    fileprivate var _topicName: KafkaString
+    fileprivate var _partitions: KafkaArray<PartitionedResponse>
     
     var topicName: String {
         return _topicName.value ?? String()
@@ -114,7 +114,7 @@ class TopicalResponse: KafkaClass {
         return values
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _topicName = KafkaString(bytes: &bytes)
         _partitions = KafkaArray(bytes: &bytes)
     }
@@ -123,8 +123,8 @@ class TopicalResponse: KafkaClass {
         return _topicName.length + _partitions.length
     }
     
-    var data: NSData {
-        return NSData()
+    var data: Data {
+        return Data()
     }
 
     var description: String {
@@ -135,11 +135,11 @@ class TopicalResponse: KafkaClass {
 }
 
 class PartitionedResponse: KafkaClass {
-    private var _partition: KafkaInt32
-    private var _errorCode: KafkaInt16
-    private var _offset: KafkaInt64
+    fileprivate var _partition: KafkaInt32
+    fileprivate var _errorCode: KafkaInt16
+    fileprivate var _offset: KafkaInt64
 
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _partition = KafkaInt32(bytes: &bytes)
         _errorCode = KafkaInt16(bytes: &bytes)
         _offset = KafkaInt64(bytes: &bytes)
@@ -161,8 +161,8 @@ class PartitionedResponse: KafkaClass {
         return _partition.length + _errorCode.length + _offset.length
     }
 
-    var data: NSData {
-        return NSData()
+    var data: Data {
+        return Data()
     }
 
     var description: String {
@@ -186,7 +186,7 @@ class KafkaTopicalMessageSet: KafkaClass {
         self.topic = KafkaString(value: topic)
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         values = KafkaArray(bytes: &bytes)
         topic = KafkaString(bytes: &bytes)
     }
@@ -195,13 +195,13 @@ class KafkaTopicalMessageSet: KafkaClass {
         return topic.length + values.length
     }
     
-    var data: NSData {
+    var data: Data {
         let data = NSMutableData(capacity: Int(length))!
         
-        data.appendData(topic.data)
-        data.appendData(values.data)
+        data.append(topic.data as Data)
+        data.append(values.data as Data)
         
-        return data
+        return data as Data
     }
     
     var description: String {
@@ -220,8 +220,9 @@ class KafkaPartitionedMessageSet: KafkaClass {
         self.partition = KafkaInt32(value: partition)
     }
     
-    required init(inout bytes: [UInt8]) {
-        value = MessageSet(bytes: &bytes)
+    required init(bytes: inout [UInt8]) {
+        //value = MessageSet(values: bytes as! [MessageSetItem])
+        value = MessageSet(bytes: &bytes )
         partition = KafkaInt32(bytes: &bytes)
     }
     
@@ -229,13 +230,13 @@ class KafkaPartitionedMessageSet: KafkaClass {
         return partition.length + value.length
     }
     
-    var data: NSData {
+    var data: Data {
         let data = NSMutableData(capacity: Int(length))!
         
-        data.appendData(partition.data)
-        data.appendData(value.data)
+        data.append(partition.data as Data)
+        data.append(value.data as Data)
         
-        return data
+        return data as Data
     }
     
     var description: String {

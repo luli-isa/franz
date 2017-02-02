@@ -10,13 +10,13 @@ import Foundation
 
 class KafkaRequest: NSObject {
 
-    static private var _correlationIdIndex: Int32 = 0
+    static fileprivate var _correlationIdIndex: Int32 = 0
     
-    private var _apiKey: KafkaInt16
-    private var _apiVersion: KafkaInt16
-    private var _clientId: KafkaString?
-    private var _correlationId: KafkaInt32
-    private var value: KafkaClass?
+    fileprivate var _apiKey: KafkaInt16
+    fileprivate var _apiVersion: KafkaInt16
+    fileprivate var _clientId: KafkaString?
+    fileprivate var _correlationId: KafkaInt32
+    fileprivate var value: KafkaClass?
     
     var clientId: KafkaString {
         get {
@@ -39,7 +39,7 @@ class KafkaRequest: NSObject {
     init(
         apiKey: ApiKey,
         value: KafkaClass? = nil,
-        apiVersion: ApiVersion = ApiVersion.DefaultVersion
+        apiVersion: ApiVersion = ApiVersion.defaultVersion
     ) {
         KafkaRequest._correlationIdIndex += 1
         self._correlationId = KafkaInt32(value: KafkaRequest._correlationIdIndex)
@@ -64,26 +64,26 @@ class KafkaRequest: NSObject {
         return 4
     }
     
-    var sizeData: NSData {
-        return Int32(self.length).data
+    var sizeData: Data {
+        return Int32(self.length).data as Data
     }
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
         
-        data.appendData(self.sizeData)
-        data.appendData(self._apiKey.data)
-        data.appendData(self._apiVersion.data)
-        data.appendData(self.correlationId.data)
-        data.appendData(self.clientId.data)
+        data.append(self.sizeData)
+        data.append(self._apiKey.data as Data)
+        data.append(self._apiVersion.data as Data)
+        data.append(self.correlationId.data as Data)
+        data.append(self.clientId.data as Data)
         
         if let value = self.value {
-            data.appendData(value.data)
+            data.append(value.data as Data)
         }
         
         //print("REQUEST LENGTH: \(data.length)")
         //print(self.description)
-        return data
+        return data as Data
     }()
     
     override var description: String {

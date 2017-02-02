@@ -15,7 +15,7 @@ class GroupCoordinatorRequest: KafkaRequest {
     }
     
     init(value: GroupCoordinatorRequestMessage) {
-        super.init(apiKey: ApiKey.GroupCoordinatorRequest, value: value)
+        super.init(apiKey: ApiKey.groupCoordinatorRequest, value: value)
     }
     
 }
@@ -23,13 +23,13 @@ class GroupCoordinatorRequest: KafkaRequest {
 
 class GroupCoordinatorRequestMessage: KafkaClass {
     
-    private var _groupId: KafkaString
+    fileprivate var _groupId: KafkaString
     
     init(groupId: String) {
         _groupId = KafkaString(value: groupId)
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _groupId = KafkaString(bytes: &bytes)
     }
     
@@ -37,10 +37,10 @@ class GroupCoordinatorRequestMessage: KafkaClass {
         return self._groupId.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         var data = NSMutableData(capacity: self.length)!
-        data.appendData(self._groupId.data)
-        return data
+        data.append(self._groupId.data as Data)
+        return data as Data
     }()
     
     var id: String {
@@ -76,7 +76,7 @@ class GroupCoordinatorResponse: KafkaResponse {
         return _coordinatorPort.value
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _errorCode = KafkaInt16(bytes: &bytes)
         _coordinatorId = KafkaInt32(bytes: &bytes)
         _coordinatorHost = KafkaString(bytes: &bytes)
@@ -91,13 +91,13 @@ class GroupCoordinatorResponse: KafkaResponse {
             self._coordinatorPort.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._errorCode.data)
-        data.appendData(self._coordinatorId.data)
-        data.appendData(self._coordinatorHost.data)
-        data.appendData(self._coordinatorPort.data)
-        return data
+        data.append(self._errorCode.data as Data)
+        data.append(self._coordinatorId.data as Data)
+        data.append(self._coordinatorHost.data as Data)
+        data.append(self._coordinatorPort.data as Data)
+        return data as Data
     }()
     
     override var description: String {

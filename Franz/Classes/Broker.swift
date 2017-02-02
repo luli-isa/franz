@@ -8,50 +8,38 @@
 
 import Foundation
 
-public enum BrokerError: ErrorType {
-    case NoConnection
-    case NoGroupMembershipForBroker
+public enum BrokerError: Error {
+    case noConnection
+    case noGroupMembershipForBroker
 }
 
 
 class Broker: KafkaClass {
     var groupMembership = [String: GroupMembership]()
 
-    private var _nodeId: KafkaInt32
-    private var _host: KafkaString
-    private var _port: KafkaInt32
+    fileprivate var _nodeId: KafkaInt32
+    fileprivate var _host: KafkaString
+    fileprivate var _port: KafkaInt32
     
-    private var _readQueues = [Int32: dispatch_queue_t]()
+    fileprivate var _readQueues = [Int32: DispatchQueue]()
     
-    private lazy var _metadataReadQueue = {
-        return dispatch_queue_create(
-            "metadata.read.stream.franz",
-            DISPATCH_QUEUE_SERIAL
-        )
+    fileprivate lazy var _metadataReadQueue : DispatchQueue = {
+        return DispatchQueue(label: "metadata.read.stream.franz")
     }()
 
-    private lazy var _metadataWriteQueue = {
-        return dispatch_queue_create(
-            "metadata.write.stream.franz",
-            DISPATCH_QUEUE_SERIAL
-        )
+    fileprivate lazy var _metadataWriteQueue : DispatchQueue = {
+        return DispatchQueue( label: "metadata.write.stream.franz" )
     }()
 
-    private lazy var _adminReadQueue = {
-        return dispatch_queue_create(
-            "admin.read.stream.franz",
-            DISPATCH_QUEUE_SERIAL
-        )
+    fileprivate lazy var _adminReadQueue : DispatchQueue = {
+        return DispatchQueue(label: "admin.read.stream.franz" )
     }()
 
-    private lazy var _groupCoordinationQueue = {
-        return dispatch_queue_create(
-            "group.read.stream.franz",
-            DISPATCH_QUEUE_SERIAL
-        )
+    fileprivate lazy var _groupCoordinationQueue : DispatchQueue = {
+        return DispatchQueue( label: "group.read.stream.franz" )
     }()
 
-    private var _connection: KafkaConnection?
+    fileprivate var _connection: KafkaConnection?
 
     var nodeId: Int32 {
         get {
@@ -93,7 +81,7 @@ class Broker: KafkaClass {
         self._port = KafkaInt32(value: Int32(port))
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _nodeId = KafkaInt32(bytes: &bytes)
         _host = KafkaString(bytes: &bytes)
         _port = KafkaInt32(bytes: &bytes)
@@ -103,11 +91,11 @@ class Broker: KafkaClass {
         return _nodeId.length + _host.length + _port.length
     }
     
-    var data: NSData {
-        return NSData()
+    var data: Data {
+        return Data()
     }
 
-    func connect(clientId: String) -> KafkaConnection {
+    func connect(_ clientId: String) -> KafkaConnection {
         if _connection == nil {
             _connection = KafkaConnection(
                 ipv4: ipv4,
@@ -121,13 +109,13 @@ class Broker: KafkaClass {
     }
 
     func poll(
-        topic: String,
+        _ topic: String,
         partition: Int32,
         groupId: String,
         clientId: String,
         replicaId: ReplicaId,
-        _ callback: (Int64, [Message]) -> (),
-        _ errorCallback: (KafkaErrorCode -> ())? = nil
+        _ callback: @escaping (Int64, [Message]) -> (),
+        _ errorCallback: ((KafkaErrorCode) -> ())? = nil
     ) throws {
         if let _ = groupMembership[groupId] {
             fetchGroupOffset(
@@ -147,18 +135,18 @@ class Broker: KafkaClass {
                 )
             }
         } else {
-            throw BrokerError.NoGroupMembershipForBroker
+            throw BrokerError.noGroupMembershipForBroker
         }
     }
     
     func poll(
-        topic: String,
+        _ topic: String,
         partition: Int32,
         offset: Int64,
         clientId: String,
         replicaId: ReplicaId,
-        _ callback: (Int64, [Message]) -> (),
-        _ errorCallback: (KafkaErrorCode -> ())? = nil
+        _ callback: @escaping (Int64, [Message]) -> (),
+        _ errorCallback: ((KafkaErrorCode) -> ())? = nil
     ) {
         let readQueue = getReadQueue(topic, partition: partition)
         
@@ -168,7 +156,7 @@ class Broker: KafkaClass {
         )
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(readQueue) {
+            readQueue.async {
                 var mutableBytes = bytes
                 let response = FetchResponse(bytes: &mutableBytes)
                 for responseTopic in response.topics {
@@ -205,12 +193,12 @@ class Broker: KafkaClass {
     }
 
     func fetch(
-        topic: String,
+        _ topic: String,
         partition: Int32,
         offset: Int64,
         clientId: String,
         replicaId: ReplicaId,
-        callback: [Message] -> ()
+        callback: @escaping ([Message]) -> ()
     ) {
         fetch(
             [topic: [partition: offset]],
@@ -221,26 +209,26 @@ class Broker: KafkaClass {
     }
 
     func fetch(
-        topic: String,
+        _ topic: String,
         partition: Int32,
         clientId: String,
-        callback: [Message] -> ()
+        callback: @escaping ([Message]) -> ()
     ) {
         fetch(
             topic,
             partition: partition,
             offset: 0,
             clientId: clientId,
-            replicaId: ReplicaId.None,
+            replicaId: ReplicaId.none,
             callback: callback
         )
     }
     
     func fetch(
-        topics: [String: [Int32:Int64]],
+        _ topics: [String: [Int32:Int64]],
         clientId: String,
         replicaId: ReplicaId,
-        callback: [Message] -> ()
+        callback: @escaping ([Message]) -> ()
     ) {
         let readQueue = getReadQueue("topics", partition: 0)
         
@@ -250,7 +238,7 @@ class Broker: KafkaClass {
         )
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(readQueue) {
+            readQueue.async {
                 var mutableBytes = bytes
                 let response = FetchResponse(bytes: &mutableBytes)
                 for responseTopic in response.topics {
@@ -272,20 +260,20 @@ class Broker: KafkaClass {
         }
     }
     
-    func send(topic: String, partition: Int32, batch: MessageSet, clientId: String) {
+    func send(_ topic: String, partition: Int32, batch: MessageSet, clientId: String) {
         let request = ProduceRequest(values: [topic: [partition: batch]])
         connect(clientId).write(request)
     }
     
     func commitGroupOffset(
-        groupId: String,
+        _ groupId: String,
         topic: String,
         partition: Int32,
         offset: Int64,
         metadata: String?,
         clientId: String,
         _ callback: (() -> ())? = nil,
-        _ errorCallback: (KafkaErrorCode -> ())? = nil
+        _ errorCallback: ((KafkaErrorCode) -> ())? = nil
     ) {
         if let groupMembership = self.groupMembership[groupId] {
             let request = OffsetCommitRequest(
@@ -296,7 +284,7 @@ class Broker: KafkaClass {
             )
             
             connect(clientId).write(request) { bytes in
-                dispatch_async(self._metadataReadQueue) {
+                self._metadataReadQueue.async {
                     var mutableBytes = bytes
                     let response = OffsetCommitResponse(bytes: &mutableBytes)
                     for responseTopic in response.topics {
@@ -319,11 +307,11 @@ class Broker: KafkaClass {
     }
     
     func fetchGroupOffset(
-        groupId: String,
+        _ groupId: String,
         topic: String,
         partition: Int32,
         clientId: String,
-        callback: (Int64) -> ()
+        callback: @escaping (Int64) -> ()
     ) {
         if let _ = self.groupMembership[groupId] {
             let request = OffsetFetchRequest(
@@ -332,7 +320,7 @@ class Broker: KafkaClass {
             )
 
             connect(clientId).write(request) { bytes in
-                dispatch_async(self._metadataReadQueue) {
+                self._metadataReadQueue.async {
                     var mutableBytes = bytes
                     let response = OffsetFetchResponse(bytes: &mutableBytes)
                     for responseTopic in response.topics {
@@ -356,14 +344,14 @@ class Broker: KafkaClass {
     }
 
     func getOffsets(
-        topic: String,
+        _ topic: String,
         partition: Int32,
         clientId: String,
-        callback: [Int64] -> ()
+        callback: @escaping ([Int64]) -> ()
     ) {
         let request = OffsetRequest(topic: topic, partitions: [partition])
         connect(clientId).write(request) { bytes in
-            dispatch_async(self._metadataReadQueue) {
+            self._metadataReadQueue.async {
                 var mutableBytes = bytes
                 let response = OffsetResponse(bytes: &mutableBytes)
                 for topicalPartitionedOffsets in response.topicalPartitionedOffsets {
@@ -385,11 +373,11 @@ class Broker: KafkaClass {
         }
     }
     
-    func listGroups(clientId: String, callback: ((String, String) -> ())? = nil) {
+    func listGroups(_ clientId: String, callback: ((String, String) -> ())? = nil) {
         let listGroupsRequest = ListGroupsRequest()
 
         connect(clientId).write(listGroupsRequest) { bytes in
-            dispatch_async(self._metadataReadQueue) {
+            self._metadataReadQueue.async {
                 var mutableBytes = bytes
                 let response = ListGroupsResponse(bytes: &mutableBytes)
                 if let error = response.error {
@@ -412,20 +400,20 @@ class Broker: KafkaClass {
     }
     
     func describeGroups(
-        groupId: String,
+        _ groupId: String,
         clientId: String,
         callback: ((String, GroupState) -> ())? = nil
     ) {
         let describeGroupRequest = DescribeGroupsRequest(id: groupId)
         connect(clientId).write(describeGroupRequest) { bytes in
-            dispatch_async(self._metadataReadQueue) {
+            self._metadataReadQueue.async {
                 var mutableBytes = bytes
                 let response = DescribeGroupsResponse(bytes: &mutableBytes)
                 for groupState in response.states {
                     if let error = groupState.error {
                         if error.code == 0 {
                             if let describeGroupCallback = callback {
-                                if let id = groupState.id, state = groupState.state {
+                                if let id = groupState.id, let state = groupState.state {
                                     describeGroupCallback(id, state)
                                 }
                             }
@@ -443,10 +431,10 @@ class Broker: KafkaClass {
     }
     
     func joinGroup(
-        groupId: String,
+        _ groupId: String,
         subscription: [String],
         clientId: String,
-        callback: (GroupMembership -> ())? = nil
+        callback: ((GroupMembership) -> ())? = nil
     ) {
         let metadata = ConsumerGroupMetadata(subscription: subscription)
         
@@ -456,7 +444,7 @@ class Broker: KafkaClass {
         )
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(self._groupCoordinationQueue) {
+            self._groupCoordinationQueue.async {
                 var mutableBytes = bytes
                 let response = JoinGroupResponse(bytes: &mutableBytes)
                 //print(response.description)
@@ -494,13 +482,13 @@ class Broker: KafkaClass {
     }
     
     func syncGroup(
-        groupId: String,
+        _ groupId: String,
         generationId: Int32,
         memberId: String,
         topics: [String: [Int32]],
-        userData: NSData,
+        userData: Data,
         clientId: String,
-        version: ApiVersion =  ApiVersion.DefaultVersion,
+        version: ApiVersion =  ApiVersion.defaultVersion,
         callback: (() -> ())? = nil
     ) {
         let groupAssignmentMetadata = [GroupMemberAssignment(
@@ -517,7 +505,7 @@ class Broker: KafkaClass {
         )
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(self._groupCoordinationQueue) {
+            self._groupCoordinationQueue.async {
                 var mutableBytes = bytes
                 let response = SyncGroupResponse<GroupMemberAssignment>(bytes: &mutableBytes)
                 if let error = response.error {
@@ -538,7 +526,7 @@ class Broker: KafkaClass {
     }
     
     func leaveGroup(
-        groupId: String,
+        _ groupId: String,
         memberId: String,
         clientId: String,
         callback: (() -> ())? = nil
@@ -546,7 +534,7 @@ class Broker: KafkaClass {
         let request = LeaveGroupRequest(groupId: groupId, memberId: memberId)
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(self._groupCoordinationQueue) {
+            self._groupCoordinationQueue.async {
                 var mutableBytes = bytes
                 let response = LeaveGroupResponse(bytes: &mutableBytes)
                 if let error = response.error {
@@ -567,7 +555,7 @@ class Broker: KafkaClass {
     }
     
     func heartbeatRequest(
-        groupId: String,
+        _ groupId: String,
         generationId: Int32,
         memberId: String,
         clientId: String,
@@ -580,7 +568,7 @@ class Broker: KafkaClass {
         )
         
         connect(clientId).write(request) { bytes in
-            dispatch_async(self._groupCoordinationQueue) {
+            self._groupCoordinationQueue.async {
                 var mutableBytes = bytes
                 let response = HeartbeatResponse(bytes: &mutableBytes)
                 //print(response.description)
@@ -601,14 +589,14 @@ class Broker: KafkaClass {
         }
     }
     
-    private func getReadQueue(topic: String, partition: Int32) -> dispatch_queue_t {
-        var readQueue: dispatch_queue_t
+    fileprivate func getReadQueue(_ topic: String, partition: Int32) -> DispatchQueue {
+        var readQueue: DispatchQueue
         if let pq = _readQueues[partition] {
             readQueue = pq
         } else {
-            _readQueues[partition] = dispatch_queue_create(
-                "\(partition).\(topic).read.stream.franz",
-                DISPATCH_QUEUE_CONCURRENT
+            _readQueues[partition] = DispatchQueue(
+                label: "\(partition).\(topic).read.stream.franz",
+                attributes: DispatchQueue.Attributes.concurrent
             )
             readQueue = _readQueues[partition]!
         }

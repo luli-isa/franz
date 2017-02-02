@@ -18,7 +18,7 @@ import Foundation
         - Parameter message:  the returned message
         - Parameter offset:   the message offset
      */
-    func consumerDidReturnMessage(message: Message, offset: Int64)
+    func consumerDidReturnMessage(_ message: Message, offset: Int64)
 
     /**
         Called when a fetch request has failed and cannot be retried.
@@ -29,8 +29,8 @@ import Foundation
         - Parameter errorId:    the error Id returned from the server
         - Parameter errorDescription:   a description of the error returned from the server
      */
-    optional func fetchDidFail(
-        topic: String,
+    @objc optional func fetchDidFail(
+        _ topic: String,
         partition: Int32,
         errorId: Int16,
         errorDescription: String
@@ -47,8 +47,8 @@ import Foundation
      
         - Returns:  true if broker should attempt to retry request, false if not
      */
-    optional func shouldRetryFailedFetch(
-        topic: String,
+    @objc optional func shouldRetryFailedFetch(
+        _ topic: String,
         partition: Int32,
         errorId: Int16,
         errorDescription: String
@@ -59,7 +59,7 @@ import Foundation
      
         - Parameter consumer:   a Consumer
     */
-    func consumerIsReady(consumer: Consumer)
+    func consumerIsReady(_ consumer: Consumer)
 
     /**
         Called if a Leader is not found for a topic-partition
@@ -67,7 +67,7 @@ import Foundation
         - Parameter topic:      the topic
         - Parameter partition:  the partition
     */
-    optional func topicPartitionLeaderNotFound(topic: String, partition: Int32)
+    @objc optional func topicPartitionLeaderNotFound(_ topic: String, partition: Int32)
 }
 
 
@@ -84,7 +84,7 @@ import Foundation
      
         - Returns:  true if offset should be committed, false if otherwise
     */
-    optional func shouldCommitOffset(topic: String, partition: Int32, offset: Int64) -> Bool
+    @objc optional func shouldCommitOffset(_ topic: String, partition: Int32, offset: Int64) -> Bool
 
     /**
         Called after messages have been pulled for server.
@@ -95,7 +95,7 @@ import Foundation
 
         - Returns:  additional metadata to send with offset commit to server
     */
-    optional func shouldAttachOffsetMetadata(topic: String, partition: Int32, offset: Int64) -> String?
+    @objc optional func shouldAttachOffsetMetadata(_ topic: String, partition: Int32, offset: Int64) -> String?
 
     /**
          Called after offset has been successfully committed
@@ -104,7 +104,7 @@ import Foundation
         - Parameter partition: the partition
         - Parameter offset: the offset
     */
-    optional func offsetDidCommit(topic: String, partition: Int32, offset: Int64)
+    @objc optional func offsetDidCommit(_ topic: String, partition: Int32, offset: Int64)
 
     /**
         Called if offset commit has failed and cannot be retried.
@@ -115,7 +115,7 @@ import Foundation
         - Parameter errorId: error code id
         - Parameter errorDescription: description of the error
     */
-    optional func offsetCommitDidFail(topic: String, partition: Int32, offset: Int64, errorId: Int16, errorDescription: String)
+    @objc optional func offsetCommitDidFail(_ topic: String, partition: Int32, offset: Int64, errorId: Int16, errorDescription: String)
 
     /**
         Called if offset commit has failed and commit is retriable
@@ -128,19 +128,19 @@ import Foundation
 
         - Returns: true if offset commit should be retried, false if otherwise
     */
-    optional func shouldRetryFailedOffsetCommit(topic: String, partition: Int32, offset: Int64, errorId: Int16, errorDescription: String) -> Bool
+    @objc optional func shouldRetryFailedOffsetCommit(_ topic: String, partition: Int32, offset: Int64, errorId: Int16, errorDescription: String) -> Bool
 }
 
 
 /*
     Base consumer class
 */
-public class Consumer: NSObject {
+open class Consumer: NSObject {
     internal var broker: Broker?
 
-    private var _topic: String
-    private var _partition: Int32
-    private var _clientId: String
+    fileprivate var _topic: String
+    fileprivate var _partition: Int32
+    fileprivate var _clientId: String
     
     internal init(topic: String, partition: Int32, clientId: String) {
         self._topic = topic
@@ -153,11 +153,11 @@ public class Consumer: NSObject {
 /*
     Class implementing a simple consumer model.
 */
-public class SimpleConsumer: Consumer {
+open class SimpleConsumer: Consumer {
     /**
         the delegate
      */
-    public var delegate: ConsumerDelegate
+    open var delegate: ConsumerDelegate
     
     internal init(
         topic: String,
@@ -174,16 +174,16 @@ public class SimpleConsumer: Consumer {
         
         Parameter offset:   starting offset
      */
-    public func poll(offset: Int64) {
+    open func poll(_ offset: Int64) {
         if let coordinator = broker {
             coordinator.poll(
                 _topic,
                 partition: _partition,
                 offset: offset,
                 clientId: _clientId,
-                replicaId: ReplicaId.None,
+                replicaId: ReplicaId.none,
                 { offset, messages in
-                    for (idx, message) in messages.enumerate() {
+                    for (idx, message) in messages.enumerated() {
                         self.delegate.consumerDidReturnMessage(
                             message,
                             offset: Int64(idx) + offset
@@ -219,12 +219,12 @@ public class SimpleConsumer: Consumer {
     Class implementing a high-level consumer. Managed by a group coordinator.
     The delegate is called after each fetch to
 */
-public class HighLevelConsumer: Consumer {
+open class HighLevelConsumer: Consumer {
 
     /**
         The Delegate
      */
-    public var delegate: HighLevelConsumerDelegate
+    open var delegate: HighLevelConsumerDelegate
 
     internal var membership: GroupMembership?
     
@@ -241,7 +241,7 @@ public class HighLevelConsumer: Consumer {
     /**
         Poll for messages
      */
-    public func poll() {
+    open func poll() {
         if let groupId = membership?.group.id {
             if let coordinator = broker {
                 do {
@@ -250,9 +250,9 @@ public class HighLevelConsumer: Consumer {
                         partition: _partition,
                         groupId: groupId,
                         clientId: _clientId,
-                        replicaId: ReplicaId.None,
+                        replicaId: ReplicaId.none,
                         {  offset, messages in
-                            for (idx, message) in messages.enumerate() {
+                            for (idx, message) in messages.enumerated() {
                                 self.delegate.consumerDidReturnMessage(
                                     message,
                                     offset: offset + Int64(idx)

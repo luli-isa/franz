@@ -10,16 +10,16 @@ import Foundation
 
 
 protocol VariableLengthDatable {
-    var data: NSData { get }
+    var data: Data { get }
     init()
-    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable
+    static func fromBytes(_ bytes: [UInt8]) -> VariableLengthDatable
 }
 
 
 protocol FixedLengthDatable {
     init(_:Int)
     func toInt() -> Int
-    var data: NSData { get }
+    var data: Data { get }
     init(bytes: [UInt8])
 }
 
@@ -28,9 +28,11 @@ extension Int8: FixedLengthDatable {
     
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 1)
         let data = NSData(bytes: &bytes, length: 1)
         var out: Int8 = 0
-        data.getBytes(&out, length: sizeof(Int8.self))
+        //(data as NSData).getBytes(&out, length: sizeof(Int8.self))
+        data.getBytes(&out, length: MemoryLayout<Int8>.size)
         self.init(out)
     }
 
@@ -38,9 +40,10 @@ extension Int8: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -48,9 +51,11 @@ extension UInt8: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 1)
         let data = NSData(bytes: &bytes, length: 1)
         var out: UInt8 = 0
-        data.getBytes(&out, length: sizeof(UInt8.self))
+        //(data as NSData).getBytes(&out, length: sizeof(UInt8.self))
+        data.getBytes(&out, length: MemoryLayout<UInt8>.size)
         self.init(out)
     }
     
@@ -58,9 +63,10 @@ extension UInt8: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -68,9 +74,11 @@ extension Int16: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 2)
         let data = NSData(bytes: &bytes, length: 2)
         var out: Int16 = 0
-        data.getBytes(&out, length: sizeof(Int16.self))
+        //(data as NSData).getBytes(&out, length: sizeof(Int16.self))
+        data.getBytes(&out, length: MemoryLayout<Int16>.size)
         self.init(out.bigEndian)
     }
     
@@ -78,9 +86,10 @@ extension Int16: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -88,9 +97,11 @@ extension UInt16: FixedLengthDatable {
     
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 2)
         let data = NSData(bytes: &bytes, length: 2)
         var out: UInt16 = 0
-        data.getBytes(&out, length: sizeof(UInt16.self))
+        //(data as NSData).getBytes(&out, length: sizeof(UInt16.self))
+        data.getBytes(&out, length: MemoryLayout<UInt16>.size)
         self.init(out.bigEndian)
     }
     
@@ -98,9 +109,10 @@ extension UInt16: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -108,9 +120,11 @@ extension Int32: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 4)
         let data = NSData(bytes: &bytes, length: 4)
         var out: Int32 = 0
-        data.getBytes(&out, length: sizeof(Int32.self))
+        //(data as NSData).getBytes(&out, length: sizeof(Int32.self))
+        data.getBytes(&out, length: MemoryLayout<Int32>.size)
         self.init(out.bigEndian)
     }
     
@@ -118,9 +132,11 @@ extension Int32: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
+        
     }
 }
 
@@ -128,9 +144,11 @@ extension UInt32: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 4)
         let data = NSData(bytes: &bytes, length: 4)
         var out: UInt32 = 0
-        data.getBytes(&out, length: sizeof(UInt32.self))
+        //(data as NSData).getBytes(&out, length: sizeof(UInt32.self))
+        data.getBytes(&out, length: MemoryLayout<UInt32>.size)
         self.init(out.bigEndian)
     }
     
@@ -138,9 +156,10 @@ extension UInt32: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -148,9 +167,11 @@ extension Int: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
-        let data = NSData(bytes: &bytes, length: sizeof(Int.self))
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(Int.self))
+        let data = NSData(bytes: &bytes, length: MemoryLayout<Int>.size)
         var out: Int = 0
-        data.getBytes(&out, length: sizeof(Int.self))
+        //(data as NSData).getBytes(&out, length: sizeof(Int.self))
+        data.getBytes(&out, length: MemoryLayout<Int>.size)
         self.init(out.bigEndian)
     }
     
@@ -160,16 +181,21 @@ extension Int: FixedLengthDatable {
    
     init(_ value: FixedLengthDatable) {
         var dataBytes = value.data
-        let data = NSData(bytes: &dataBytes, length: sizeof(FixedLengthDatable.self))
+        //let data = Data(bytes: UnsafePointer<UInt8>(&dataBytes), count: sizeof(FixedLengthDatable.self))
+        let data = NSData(bytes: &dataBytes, length: MemoryLayout<FixedLengthDatable>.size)
 
         var out: Int = 0
-        data.getBytes(&out, length: sizeof(Int.self))
+        //(data as NSData).getBytes(&out, length: sizeof(Int.self))
+        data.getBytes(&out, length: MemoryLayout<Int>.size)
+        
+        
         self.init(out.bigEndian)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -177,9 +203,10 @@ extension Int64: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 8)
         let data = NSData(bytes: &bytes, length: 8)
         var out: Int64 = 0
-        data.getBytes(&out, length: sizeof(Int64.self))
+        data.getBytes(&out, length: MemoryLayout<Int64>.size)
         self.init(out.bigEndian)
     }
     
@@ -187,9 +214,10 @@ extension Int64: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
@@ -197,9 +225,10 @@ extension UInt64: FixedLengthDatable {
 
     init(bytes: [UInt8]) {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: 8)
         let data = NSData(bytes: &bytes, length: 8)
         var out: UInt64 = 0
-        data.getBytes(&out, length: sizeof(UInt64.self))
+        data.getBytes(&out, length: MemoryLayout<UInt64>.size)
         self.init(out.bigEndian)
     }
     
@@ -207,56 +236,60 @@ extension UInt64: FixedLengthDatable {
         return Int(self)
     }
     
-    var data: NSData {
+    var data: Data {
         var bytes = self.bigEndian
-        return NSData(bytes: &bytes, length: sizeof(self.dynamicType))
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: sizeof(type(of: self)))
+        return NSData(bytes: &bytes, length: MemoryLayout<UInt8>.size) as Data
     }
 }
 
 extension String: VariableLengthDatable {
 
-    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable {
+    static func fromBytes(_ bytes: [UInt8]) -> VariableLengthDatable {
         var bytes = bytes
+        //let data = Data(bytes: UnsafePointer<UInt8>(&bytes), count: bytes.count)
         let data = NSData(bytes: &bytes, length: bytes.count)
-        let string = String(data: data, encoding: NSUTF8StringEncoding) ?? ""
+        let string = String(data: (data as Data), encoding: String.Encoding.utf8) ?? ""
+        
         return self.init(string)
     }
     
-    var data: NSData {
-        return self.dataUsingEncoding(
-            NSUTF8StringEncoding,
+    var data: Data {
+        return self.data(
+            using: String.Encoding.utf8,
             allowLossyConversion: true
-        ) ?? NSData()
+        ) ?? Data()
     }
 }
 
-extension NSData: VariableLengthDatable {
+extension Data: VariableLengthDatable {
 
-    static func fromBytes(bytes: [UInt8]) -> VariableLengthDatable {
+    static func fromBytes(_ bytes: [UInt8]) -> VariableLengthDatable {
         var bytes = bytes
-        return NSData(bytes: &bytes, length: bytes.count)
+        //return Data(bytes: UnsafePointer<UInt8>(&bytes), count: bytes.count)
+        return NSData(bytes: &bytes, length: bytes.count) as Data
     }
     
-    var data: NSData {
+    var data: Data {
         return self
     }
 }
 
 
-extension NSStreamEvent {
+extension Stream.Event {
     var description: String {
         switch self {
-        case NSStreamEvent.None:
+        case Stream.Event():
             return "None"
-        case NSStreamEvent.OpenCompleted:
+        case Stream.Event.openCompleted:
             return "Open Completed"
-        case NSStreamEvent.HasBytesAvailable:
+        case Stream.Event.hasBytesAvailable:
             return "Has Bytes Available"
-        case NSStreamEvent.HasSpaceAvailable:
+        case Stream.Event.hasSpaceAvailable:
             return "Has Space Available"
-        case NSStreamEvent.ErrorOccurred:
+        case Stream.Event.errorOccurred:
             return "Error Occurred"
-        case NSStreamEvent.EndEncountered:
+        case Stream.Event.endEncountered:
             return "End Encountered"
         default:
             return ""
@@ -264,24 +297,24 @@ extension NSStreamEvent {
     }
 }
 
-extension NSStreamStatus {
+extension Stream.Status {
     var description: String {
         switch self {
-        case NSStreamStatus.NotOpen:
+        case Stream.Status.notOpen:
             return "Not Open"
-        case NSStreamStatus.Opening:
+        case Stream.Status.opening:
             return "Opening"
-        case NSStreamStatus.Open:
+        case Stream.Status.open:
             return "Open"
-        case NSStreamStatus.Reading:
+        case Stream.Status.reading:
             return "Reading"
-        case NSStreamStatus.Writing:
+        case Stream.Status.writing:
             return "Writing"
-        case NSStreamStatus.AtEnd:
+        case Stream.Status.atEnd:
             return  "End"
-        case NSStreamStatus.Closed:
+        case Stream.Status.closed:
             return "Closed"
-        case NSStreamStatus.Error:
+        case Stream.Status.error:
             return "Error"
         }
     }
@@ -289,11 +322,11 @@ extension NSStreamStatus {
 
 extension Array {
     
-    mutating func slice(offset: Int, length: Int) -> [Element] {
+    mutating func slice(_ offset: Int, length: Int) -> [Element] {
         var values = [Element]()
         if self.count >= offset + length {
             for _ in offset..<(offset + length) {
-                let value = self.removeAtIndex(offset)
+                let value = self.remove(at: offset)
                 values.append(value)
             }
         }

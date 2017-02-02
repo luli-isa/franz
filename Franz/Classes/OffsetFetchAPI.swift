@@ -24,15 +24,15 @@ class OffsetFetchRequest: KafkaRequest {
     }
     
     init(value: OffsetFetchRequestMessage) {
-        super.init(apiKey: ApiKey.OffsetFetchRequest, value: value)
+        super.init(apiKey: ApiKey.offsetFetchRequest, value: value)
     }
 }
 
 
 class OffsetFetchRequestMessage: KafkaClass {
     
-    private var _consumerGroup: KafkaString
-    private var _topics: KafkaArray<OffsetFetchTopic>
+    fileprivate var _consumerGroup: KafkaString
+    fileprivate var _topics: KafkaArray<OffsetFetchTopic>
     
     init(
         consumerGroup: String,
@@ -44,12 +44,12 @@ class OffsetFetchRequestMessage: KafkaClass {
                 values.append(offsetCommitTopic)
             }
             _consumerGroup = KafkaString(value: consumerGroup)
-            _topics = KafkaArray(values: values)
+            _topics = KafkaArray(values: values )
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _consumerGroup = KafkaString(bytes: &bytes)
-        _topics = KafkaArray(bytes: &bytes)
+        _topics = KafkaArray(bytes: &bytes )
     }
     
     lazy var length: Int = {
@@ -57,11 +57,11 @@ class OffsetFetchRequestMessage: KafkaClass {
             self._topics.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._consumerGroup.data)
-        data.appendData(self._topics.data)
-        return data
+        data.append(self._consumerGroup.data as Data)
+        data.append(self._topics.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -74,8 +74,8 @@ class OffsetFetchRequestMessage: KafkaClass {
 
 class OffsetFetchTopic: KafkaClass {
     
-    private var _topicName: KafkaString
-    private var _partitions: KafkaArray<KafkaInt32>
+    fileprivate var _topicName: KafkaString
+    fileprivate var _partitions: KafkaArray<KafkaInt32>
     
     init(
         topic: String,
@@ -88,10 +88,10 @@ class OffsetFetchTopic: KafkaClass {
                 values.append(KafkaInt32(value: partition))
             }
             
-            _partitions = KafkaArray(values: values)
+            _partitions = KafkaArray(values: values )
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _topicName = KafkaString(bytes: &bytes)
         _partitions = KafkaArray(bytes: &bytes)
     }
@@ -101,11 +101,11 @@ class OffsetFetchTopic: KafkaClass {
             self._partitions.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._topicName.data)
-        data.appendData(self._partitions.data)
-        return data
+        data.append(self._topicName.data as Data)
+        data.append(self._partitions.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -118,9 +118,9 @@ class OffsetFetchTopic: KafkaClass {
 
 class OffsetFetchResponse: KafkaResponse {
     
-    private var _topics: KafkaArray<OffsetFetchTopicResponse>
+    fileprivate var _topics: KafkaArray<OffsetFetchTopicResponse>
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _topics = KafkaArray(bytes: &bytes)
         super.init(bytes: &bytes)
     }
@@ -133,10 +133,10 @@ class OffsetFetchResponse: KafkaResponse {
         return self._topics.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._topics.data)
-        return data
+        data.append(self._topics.data as Data)
+        return data as Data
     }()
     
     override var description: String {
@@ -148,8 +148,8 @@ class OffsetFetchResponse: KafkaResponse {
 
 
 class OffsetFetchTopicResponse: KafkaClass {
-    private var _topicName: KafkaString
-    private var _partitions: KafkaArray<OffsetFetchPartitionOffset>
+    fileprivate var _topicName: KafkaString
+    fileprivate var _partitions: KafkaArray<OffsetFetchPartitionOffset>
     
     var topic: String {
         return _topicName.value ?? String()
@@ -159,20 +159,20 @@ class OffsetFetchTopicResponse: KafkaClass {
         return _partitions.values
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _topicName = KafkaString(bytes: &bytes)
-        _partitions = KafkaArray(bytes: &bytes)
+        _partitions = KafkaArray(bytes: &bytes )
     }
     
     lazy var length: Int = {
         return self._topicName.length + self._partitions.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._topicName.data)
-        data.appendData(self._partitions.data)
-        return data
+        data.append(self._topicName.data as Data)
+        data.append(self._partitions.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {
@@ -184,14 +184,14 @@ class OffsetFetchTopicResponse: KafkaClass {
 
 
 class OffsetFetchPartitionOffset: KafkaClass {
-    private var _partition: KafkaInt32
-    private var _offset: KafkaInt64
-    private var _metadata: KafkaString
-    private var _errorCode: KafkaInt16
+    fileprivate var _partition: KafkaInt32
+    fileprivate var _offset: KafkaInt64
+    fileprivate var _metadata: KafkaString
+    fileprivate var _errorCode: KafkaInt16
     
     var error: KafkaErrorCode? {
         if _offset.value == -1 {
-            return KafkaErrorCode.NoError
+            return KafkaErrorCode.noError
         } else {
             return KafkaErrorCode(rawValue: _errorCode.value)
         }
@@ -209,7 +209,7 @@ class OffsetFetchPartitionOffset: KafkaClass {
         return _offset.value == -1 ? 0 : _offset.value
     }
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         _partition = KafkaInt32(bytes: &bytes)
         _offset = KafkaInt64(bytes: &bytes)
         _metadata = KafkaString(bytes: &bytes)
@@ -223,13 +223,13 @@ class OffsetFetchPartitionOffset: KafkaClass {
             self._errorCode.length
     }()
     
-    lazy var data: NSData = {
+    lazy var data: Data = {
         let data = NSMutableData(capacity: self.length)!
-        data.appendData(self._partition.data)
-        data.appendData(self._offset.data)
-        data.appendData(self._metadata.data)
-        data.appendData(self._errorCode.data)
-        return data
+        data.append(self._partition.data as Data)
+        data.append(self._offset.data as Data)
+        data.append(self._metadata.data as Data)
+        data.append(self._errorCode.data as Data)
+        return data as Data
     }()
     
     lazy var description: String = {

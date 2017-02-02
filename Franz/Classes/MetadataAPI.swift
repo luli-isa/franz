@@ -21,7 +21,7 @@ class TopicMetadataRequest: KafkaRequest {
     
     init(message: TopicMetadataRequestMessage) {
         super.init(
-            apiKey: ApiKey.MetadataRequest,
+            apiKey: ApiKey.metadataRequest,
             value: message
         )
     }
@@ -42,7 +42,7 @@ class TopicMetadataRequestMessage: KafkaClass {
         self.values = KafkaArray(values: strings)
     }
 
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
         values = KafkaArray(bytes: &bytes)
     }
 
@@ -50,8 +50,8 @@ class TopicMetadataRequestMessage: KafkaClass {
         return self.values.length
     }()
     
-    lazy var data: NSData = {
-        return self.values.data
+    lazy var data: Data = {
+        return (self.values.data as Data)
     }()
 
     lazy var description: String = {
@@ -62,8 +62,8 @@ class TopicMetadataRequestMessage: KafkaClass {
 
 class MetadataResponse: KafkaResponse {
     
-    private var _metadataBrokers: KafkaArray<Broker>
-    private var _topicMetadata: KafkaArray<KafkaTopic>
+    fileprivate var _metadataBrokers: KafkaArray<Broker>
+    fileprivate var _topicMetadata: KafkaArray<KafkaTopic>
     
     var brokers: [Int32: Broker] {
         var values = [Int32: Broker]()
@@ -97,9 +97,9 @@ class MetadataResponse: KafkaResponse {
         return description
     }
     
-    required init(inout bytes: [UInt8]) {
-        _metadataBrokers = KafkaArray<Broker>(bytes: &bytes)
-        _topicMetadata = KafkaArray<KafkaTopic>(bytes: &bytes)
+    required init(bytes: inout [UInt8]) {
+        _metadataBrokers = KafkaArray<Broker>(bytes: &bytes )
+        _topicMetadata = KafkaArray<KafkaTopic>(bytes: &bytes )
         super.init(bytes: &bytes)
     }
 }

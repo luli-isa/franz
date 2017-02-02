@@ -10,7 +10,7 @@ import Foundation
 
 class KafkaResponse: NSObject, Readable {    
     
-    required init(inout bytes: [UInt8]) {
+    required init(bytes: inout [UInt8]) {
 
     }
 
