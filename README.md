@@ -10,7 +10,7 @@
 ## Usage
 
 Carthage Compatible
-Swift2.2 Compatible
+Swift3 Compatible
 
 Franz is an Apache Kafka 0.9.0 client for iOS and OSx.
 
@@ -18,7 +18,7 @@ Franz supports Apache Kafka's simple and high-level consumer models.
 
 The current release of Franz should be considered beta. It is not necessarily ready for production code.
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first. 
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Installation
 
