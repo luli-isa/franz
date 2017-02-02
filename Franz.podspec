@@ -15,12 +15,12 @@ Pod::Spec.new do |s|
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
 #   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!  
+#   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description      = "Franz is an Apache Kafka 0.9.0 client for iOS and OSx. Franz supports both simple and high-level consumers."
   s.homepage         = "https://github.com/kellanburket/franz"
   s.license          = 'MIT'
   s.author           = { "kellanburket" => "kellan.burket@gmail.com" }
-  s.source           = { :git => "https://github.com/kellanburket/franz.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/luli-isa/franz.git", :tag => s.version.to_s }
 
   s.requires_arc = true
 
